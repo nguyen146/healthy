@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sức khỏe</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Cài đặt</string>
+    <string name="home">Trang chủ</string>
+    <string name="tag">Thẻ</string>
+    <string name="settings">Cài đặt</string>
+    <string name="communicate">Liên hệ</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="contact">Liên hệ</string>
+    <string name="errSendData">Gửi tin nhắn không thành công</string>
+    <string name="personInfo">Thông tin cá nhân</string>
+    <string name="gender">Giới tính</string>
+    <string name="heart">Chỉ số nhịp tim</string>
+    <string name="height">Chiều cao</string>
+    <string name="userName">Họ tên</string>
+    <string name="weight">Cân nặng</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="tittleChooseImage">Chọn ảnh</string>
+    <string name="Save">Lưu lại</string>
+    <string name="errValue">Không được để trống</string>
+    <string name="deleteTracker">Bạn có chắc muốn xóa theo dõi này?</string>
+    <string name="defaultDescription">Chưa có giá trị</string>
+    <string name="create_tracker">Tạo theo dõi</string>
+    <string name="title">Tiêu đề</string>
+    <string name="nameValue">Tên giá trị</string>
+    <string name="last_update">Cập nhật:</string>
+    <string name="increase">Tăng: </string>
+    <string name="reduced">Giảm: </string>
+    <string name="delsucess">Xóa thành công</string>
+    <string name="delerror">Xóa thất bại</string>
+    <string name="setDate">Chọn ngày</string>
+    <string name="setTime">Chọn giờ</string>
+    <string name="dismiss">Tắt</string>
+    <string name="snooze">Lặp lại</string>
+    <string name="snoozeAlert">Thông báo lại sau 10 phút</string>
+    <string name="delete">XÓA</string>
+
+
+    <string name="female">Nữ</string>
+    <string name="male">Nam</string>
+
+    <string name="progressing">Đang xử lý...</string>
+    <string name="saved">Đã lưu</string>
+    <string name="errsaved">Lưu thất bại</string>
+
+    <string name="cancel">Hủy</string>
+    <string name="ok">Đồng ý</string>
+
+
+    <string name="chat">Trò chuyện</string>
+    <string name="notification">Thông báo</string>
+    <string name="value">Giá trị</string>
+    //User
+    <string name="errUser">Tên đăng nhập không hợp lệ</string>
+    <string name="tracker">Theo dõi</string>
+
+
+    //Main
+        <string name="offline">Chế độ ngoại tuyến</string>
+    <string name="errConnection">Không có kết nối mạng</string>
+    //Login
+    <string name="errrequired">Không được bỏ trống</string>
+    <string name="Name">Họ tên</string>
+    <string name="Email">Email</string>
+    <string name="Password">Mật khẩu</string>
+    <string name="SignIn">Đăng nhập</string>
+    <string name="No_account"><u>Chưa có tài khoản? Tạo mới</u></string>
+    <string name="Remember">Nhớ tài khoản</string>
+    <string name="Register">Đăng ký</string>
+    <string name="Create">Tạo</string>
+    <string name="errEmail">Vui lòng điền vào email</string>
+    <string name="errEmail2">Email đã được sử dụng</string>
+    <string name="errPassword">Mật khẩu không dược bỏ trống</string>
+    <string name="errPassword2">Mật khẩu phải từ 6-12 ký tự</string>
+    <string name="errName">Tên không được để trống</string>
+    <string name="createAccount">Đang xử lý...</string>
+    <string name="authenticating">Đang xác thực...</string>
+</resources>

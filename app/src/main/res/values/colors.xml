@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorStarSelected">#ffff00</color>
+    <color name="colorPrimary">#0288d1</color>
+    <color name="colorPrimaryDark">#c8e9a0</color>
+    <color name="colorAccent">#0288d1</color>
+    <color name="textColorBold">#000</color>
+    <color name="textColorGray">#4e4b4b</color>
+    <color name="textColorWhite">#fff</color>
+    <color name="colorBackgroundItem">#E1F5FE</color>
+    <color name="colorRed">#ea4335</color>
+    <color name="colorBackground">#d9d9d9</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorDarkText">#8c8c8c</color>
+
+    <color name="color_green_alpha">#CC75e2f6</color>
+    <color name="color_blue">#007dcd</color>
+    <color name="color_blue2">#75e2f6</color>
+
+    <color name="color_brown">#c4c4c4</color>
+    <color name="color_black_alpha">#50000000</color>
+    <color name="color_green">#2ac640</color>
+</resources>
