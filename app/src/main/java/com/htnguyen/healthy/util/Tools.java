@@ -21,12 +21,12 @@ import java.util.Random;
 public class Tools {
     //Get date now
     public static String getCurrentDate() {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.US);
         return df.format(Calendar.getInstance().getTime());
     }
 
     public static Date convertStringToDate(String dateString) {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.US);
         Date date = null;
         try {
             date = df.parse(dateString);
@@ -43,7 +43,7 @@ public class Tools {
     }
 
     public static String convertDateToString(Date date) {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy - hh:mm aa", Locale.US);
         return df.format(date);
     }
 
@@ -79,7 +79,7 @@ public class Tools {
 
     public static String convertDateTime(int hour, int minute) {
         Time mTime = new Time(hour, minute, 0);
-        DateFormat df = new SimpleDateFormat("h:mm aa", Locale.ENGLISH);
+        DateFormat df = new SimpleDateFormat("h:mm aa", Locale.US);
         return df.format(mTime);
     }
 
