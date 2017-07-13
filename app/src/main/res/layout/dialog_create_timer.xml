@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="350dp"
-    android:background="@color/transparent"
+    android:layout_width="match_parent"
+    android:background="@null"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -27,7 +27,6 @@
             android:layout_marginTop="@dimen/size20"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/textColorWhite"
             android:padding="5dp">
 
             <EditText
@@ -44,16 +43,11 @@
                 android:text=""
                 android:textSize="@dimen/text_size15" />
 
-            <LinearLayout
+            <View
+                android:id="@+id/buttonHorizontalDivider2"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/textColorWhite"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <View style="@style/divider" />
-            </LinearLayout>
+                android:layout_height="1px"
+                android:background="@color/textColorGray" />
 
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
@@ -83,16 +77,11 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <View
+            android:id="@+id/buttonHorizontalDivider"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/textColorWhite"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <View style="@style/divider" />
-        </LinearLayout>
+            android:layout_height="1px"
+            android:background="@color/textColorGray" />
 
         <EditText
             android:id="@+id/edtDescription"
@@ -101,6 +90,7 @@
             android:background="@color/textColorWhite"
             android:gravity="start"
             android:inputType="text|textMultiLine"
+            android:textColorHint="@color/colorDarkText"
             android:lines="8"
             android:maxLines="10"
             android:minLines="10"
@@ -109,26 +99,23 @@
             android:textSize="@dimen/text_size15"
             android:hint="@string/hint_description"/>
 
-        <LinearLayout
+        <View
+            android:id="@+id/buttonHorizontalDivider3"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/textColorWhite"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <View style="@style/divider" />
-        </LinearLayout>
+            android:layout_height="1px"
+            android:background="@color/textColorGray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:layout_gravity="center"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <Button
                 android:id="@+id/btnCancel"
+                android:background="@null"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,6 +135,7 @@
 
             <Button
                 android:id="@+id/btnOk"
+                android:background="@null"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -2,9 +2,12 @@ package com.htnguyen.healthy.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.htnguyen.healthy.R;
@@ -33,6 +36,9 @@ public class CreateTimerDialog extends Dialog {
         this.onCreateTimerListener = onCreateTimerListener;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_create_timer);
+        this.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ButterKnife.bind(this, getWindow().getDecorView());
     }
 
