@@ -13,8 +13,9 @@
         android:paddingBottom="@dimen/size10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textColor="@color/colorBlack"
         android:gravity="center"
-        android:textSize="@dimen/text_size25"/>
+        android:textSize="@dimen/text_size20"/>
 
     <LinearLayout
         android:layout_width="match_parent"

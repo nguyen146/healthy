@@ -1,6 +1,5 @@
 package com.htnguyen.healthy.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -35,12 +35,11 @@ public class DateTimePickerDialog extends Dialog implements View.OnClickListener
     Button btnOk;
     // Choose "tvSetDate"  mCheckSelected = false, Choose "tvSetTime" mCheckSelected = true.
     private boolean mCheckSelected = false;
-    private Activity mActivity;
     private String mDate;
     private String mTime;
     private View mView;
 
-    public DateTimePickerDialog(@NonNull Context context, Activity mActivity, View mView) {
+    public DateTimePickerDialog(@NonNull Context context, View mView) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_date_time_picker);
@@ -49,12 +48,53 @@ public class DateTimePickerDialog extends Dialog implements View.OnClickListener
         setOnClickListener();
         setDateTimeForTextView();
         setOnChangedListenerForDateTimePicker();
-        this.mActivity = mActivity;
         this.mView = mView;
     }
 
     @Override
     public void onClick(View v) {
+        setDateTimeForTextView();
+        EditText edtTimer = (EditText) mView.findViewById(R.id.edt_timer);
+        switch (v.getId()){
+            case R.id.txtSetDate:
+                if (mCheckSelected) {
+                    txtSetDate.setTextColor(getContext().getResources().
+                            getColor(R.color.colorPrimary));
+                    txtSetTime.setTextColor(getContext().getResources().
+                            getColor(R.color.colorBlack));
+                    datePicker.setVisibility(View.VISIBLE);
+                    timePicker.setVisibility(View.INVISIBLE);
+                    mCheckSelected = false;
+                }
+
+                break;
+            case R.id.txtSetTime:
+                if (!mCheckSelected) {
+                    txtSetTime.setTextColor(getContext().getResources().
+                            getColor(R.color.colorPrimary));
+                    txtSetDate.setTextColor(getContext().getResources().
+                            getColor(R.color.colorBlack));
+                    datePicker.setVisibility(View.INVISIBLE);
+                    timePicker.setVisibility(View.VISIBLE);
+                    mCheckSelected = true;
+                }
+                break;
+            case R.id.btnOk:
+                //When date > current date
+                        if (Tools.convertStringToDate(mDate + " - " + mTime).compareTo(Tools.
+                                convertStringToDate(Tools.getCurrentDate())) >= 0){
+                            edtTimer.setText(mDate + " - " + mTime);
+                            this.dismiss();
+                        }else {
+                            txtError.requestFocus();
+                            txtError.setError(getContext().getResources().
+                                    getString(R.string.errorDate));
+                        }
+                break;
+            case R.id.btnCancel:
+                this.dismiss();
+
+        }
 //        setDateTimeForTextView();
 //        EditText edtEndDate = (EditText) mActivity.findViewById(R.id.edtEndDate);
 //        EditText edtStartDate = (EditText) mActivity.findViewById(R.id.edtStartDate);

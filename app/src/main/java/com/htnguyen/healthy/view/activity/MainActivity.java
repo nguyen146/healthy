@@ -3,6 +3,7 @@ package com.htnguyen.healthy.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,11 +33,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.htnguyen.healthy.R;
 import com.htnguyen.healthy.dialog.SignInDialog;
-import com.htnguyen.healthy.model.Timer;
 import com.htnguyen.healthy.model.User;
 import com.htnguyen.healthy.presenter.HealthyPresenter;
 import com.htnguyen.healthy.util.Constants;
-import com.htnguyen.healthy.util.DbHelper;
 import com.htnguyen.healthy.util.NetworkConnectionUtil;
 import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.HealthyView;
@@ -101,8 +100,8 @@ public class MainActivity extends BaseActivity
         userNameView.setOnClickListener(this);
         emailUserView.setOnClickListener(this);
         imgUserView.setOnClickListener(this);
-
         ButterKnife.bind(this);
+        fab.show();
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         //Setting
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -124,7 +123,11 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onClick(View v) {
+        if(!loginPreferences.getString("username", "").equals("")){
         navigator.navigateToSettingUser(MainActivity.this);
+        }else {
+            Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -136,11 +139,15 @@ public class MainActivity extends BaseActivity
                 new SignInDialog(MainActivity.this, this, this, mAuth, loginPreferences, mDatabase).show();
             }
         }else {
-            checkConnection();
-            userNameView.setText(loginPreferences.getString("username", ""));
-            emailUserView.setText(mAuth.getCurrentUser().getEmail());
-            imgUserView.setImageResource(R.drawable.user_default);
-            navSignOut.setTitle(getResources().getString(R.string.log_out));
+            if(checkConnection()){
+                onLoginSuccess(mAuth.getCurrentUser());
+            }else {
+                userNameView.setText(loginPreferences.getString("username", ""));
+                emailUserView.setText(mAuth.getCurrentUser().getEmail());
+                imgUserView.setImageResource(R.drawable.user_default);
+                navSignOut.setTitle(getResources().getString(R.string.log_out));
+            }
+
 
         }
         super.onResume();
@@ -206,7 +213,11 @@ public class MainActivity extends BaseActivity
                 break;
 
             case R.id.nav_chat:
-                replaceFragment(R.id.content_main, new UserFragment());
+                if(!loginPreferences.getString("username", "").equals("")){
+                    replaceFragment(R.id.content_main, new UserFragment());
+                }else {
+                    Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.nav_tracker:
@@ -253,15 +264,15 @@ public class MainActivity extends BaseActivity
 
     @OnClick(R.id.fab)
     void NavigationToHeartRateActivity(){
-//        healthyPresenter.navigateToHeartRateActivity();
-        Timer timer = new Timer("No one","Description",
-                DbHelper.getRandomPendingId(),
-                Tools.convertStringToDate(Tools.getCurrentDate()));
-        if(DbHelper.addTimer(this,timer)){
-            Toast.makeText(MainActivity.this,"Succsess",Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_SHORT).show();
-        }
+        healthyPresenter.navigateToHeartRateActivity();
+//        Timer timer = new Timer("No one","Description",
+//                DbHelper.getRandomPendingId(),
+//                Tools.convertStringToDate(Tools.getCurrentDate()));
+//        if(DbHelper.addTimer(this,timer)){
+//            Toast.makeText(MainActivity.this,"Succsess",Toast.LENGTH_SHORT).show();
+//        }else {
+//            Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_SHORT).show();
+//        }
 //        Items items = new Items(Tools.getCurrentDate(), "Chao", 100);
 //        final List<Items> integers = new ArrayList<>();
 //        integers.add(items);
@@ -293,7 +304,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onLoginSuccess(FirebaseUser firebaseUser) {
         final DatabaseReference user = mDatabase.child(Constants.TABLE_USER).child(firebaseUser.getUid());
-        user.addListenerForSingleValueEvent(new ValueEventListener() {
+        user.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user1 = dataSnapshot.getValue(User.class);
@@ -301,7 +312,13 @@ public class MainActivity extends BaseActivity
                     userNameView.setText(user1.getUserName());
                     emailUserView.setText(user1.getUserEmail());
                 }
-                imgUserView.setImageResource(R.drawable.user_default);
+                if (user1.getImage()!=null){
+                    byte[] byte1 = Tools.stringToByteArray(user1.getImage().trim());
+                    Bitmap bitmap = Tools.convertByteArrayToBitmap(byte1);
+                    imgUserView.setImageBitmap(bitmap);
+                }else {
+                    imgUserView.setImageResource(R.drawable.user_default);
+                }
                 navSignOut.setTitle(getResources().getString(R.string.log_out));
             }
 
@@ -311,6 +328,11 @@ public class MainActivity extends BaseActivity
             }
         });
 
+    }
+
+    @Override
+    public void onCancelLogin() {
+        replaceFragment(R.id.content_main, new MainFragment());
     }
 
     //Check connecttion

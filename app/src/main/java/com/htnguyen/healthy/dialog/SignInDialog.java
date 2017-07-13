@@ -91,6 +91,7 @@ public class SignInDialog extends Dialog {
 
     @OnClick(R.id.exit)
     public void exit() {
+        onLoginListener.onCancelLogin();
         this.dismiss();
     }
 
@@ -136,6 +137,7 @@ public class SignInDialog extends Dialog {
     }
     public interface onLoginListener {
         void onLoginSuccess(FirebaseUser firebaseUser);
+        void onCancelLogin();
     }
 
     private void getUserName(String id){

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.htnguyen.healthy.R;
+import com.htnguyen.healthy.dialog.CreateTimerDialog;
 import com.htnguyen.healthy.model.Timer;
 import com.htnguyen.healthy.util.DbHelper;
 import com.htnguyen.healthy.util.Tools;
@@ -27,7 +28,9 @@ import io.realm.RealmResults;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, TimerAdapter.TimerAdapterListener{
+public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
+        TimerAdapter.TimerAdapterListener,
+        CreateTimerDialog.OnCreateTimerListener{
 
     private Unbinder unbinder;
     @BindView(R.id.recycler_view)
@@ -84,15 +87,7 @@ public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @OnClick(R.id.fabadd)
     public void OnAddItem(){
-        Timer timer = new Timer("No one","Description",
-                DbHelper.getRandomPendingId(),
-                Tools.convertStringToDate(Tools.getCurrentDate()));
-        if(DbHelper.addTimer(getActivity(),timer)){
-            showToastMessage("Succsess");
-        }else {
-            showToastMessage("Save fail");
-        }
-        refeshAdapter();
+        new CreateTimerDialog(getActivity(), this).show();
     }
 
     public void refeshAdapter(){
@@ -103,6 +98,19 @@ public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     public void onDelete(Timer timer) {
         DbHelper.deleteTimer(getActivity(), timer);
+        refeshAdapter();
+    }
+
+    @Override
+    public void onCreate(String title, String date, String description) {
+                Timer timer = new Timer(title,description,
+                DbHelper.getRandomPendingId(),
+                Tools.convertStringToDate(date));
+        if(DbHelper.addTimer(getActivity(),timer)){
+            showToastMessage("Succsess");
+        }else {
+            showToastMessage("Save fail");
+        }
         refeshAdapter();
     }
 }

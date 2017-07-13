@@ -69,7 +69,6 @@ public class MyService extends Service{
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, mTimer.getPendingId(),
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         //Dismiss action intent
         Intent dismissIntent = new Intent(this, MyService.class);
         dismissIntent.setAction(Constants.ACTION.DISMISS_ACTION);

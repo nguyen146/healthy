@@ -26,6 +26,9 @@
     <string name="errValue">Required field</string>
     <string name="snoozeAlert">Snooze after 10 minutes</string>
     <string name="delete">DELETE</string>
+    <string name="errSetting">You\'re not login</string>
+    <string name="hint_description">Type your note here!</string>
+    <string name="new_point">Add new point</string>
 
     <string name="cancel">CANCEL</string>
     <string name="ok">OK</string>
@@ -43,6 +46,8 @@
     <string name="snooze">Snooze</string>
 
     <string name="create_tracker">Create tracker</string>
+    <string name="create_timer">Create timer</string>
+    <string name="errorDate">Date cannot be less than current date</string>
     <string name="chat">Chat</string>
     <string name="notification">Notification</string>
 

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:background="@color/transparent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_dialog_tracker">
+
+
+        <TextView
+            android:layout_marginTop="@dimen/size10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size20"
+            android:textColor="@color/color_blue"
+            android:text="@string/create_timer"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_title"
+            android:layout_marginTop="@dimen/size20"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/textColorWhite"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_title"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="@string/title"
+                android:text=""
+                android:textSize="@dimen/text_size15" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/textColorWhite"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <View style="@style/divider" />
+            </LinearLayout>
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_timer"
+            android:layout_marginBottom="@dimen/size10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/textColorWhite"
+            android:padding="5dp">
+
+            <EditText
+                android:id="@+id/edt_timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableLeft="@drawable/ic_timer"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="@string/setTime"
+                android:focusableInTouchMode="false"
+                android:focusable="false"
+                android:inputType="datetime"
+                android:text=""
+                android:textSize="@dimen/text_size15" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/textColorWhite"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <View style="@style/divider" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@color/textColorWhite"
+            android:gravity="start"
+            android:inputType="text|textMultiLine"
+            android:lines="8"
+            android:maxLines="10"
+            android:minLines="10"
+            android:paddingLeft="30dp"
+            android:scrollbars="vertical"
+            android:textSize="@dimen/text_size15"
+            android:hint="@string/hint_description"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/textColorWhite"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <View style="@style/divider" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btnCancel"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textSize="@dimen/text_size16" />
+
+            <!-- The vertical divider line between the two buttons -->
+
+            <View
+                android:id="@+id/buttonVerticalDivider"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/textColorGray" />
+
+            <Button
+                android:id="@+id/btnOk"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ok"
+                android:textSize="@dimen/text_size16" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

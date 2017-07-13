@@ -40,6 +40,11 @@
     <string name="snooze">Lặp lại</string>
     <string name="snoozeAlert">Thông báo lại sau 10 phút</string>
     <string name="delete">XÓA</string>
+    <string name="errSetting">Bạn chưa đăng nhập</string>
+    <string name="hint_description">Điền ghi chú của bạn ở đây</string>
+    <string name="new_point">Giá trị mới</string>
+    <string name="create_timer">Tạo bộ đếm ngược</string>
+    <string name="errorDate">Ngày giờ chọn không thể nhỏ hơn ngày giờ hiện hành</string>
 
 
     <string name="female">Nữ</string>
