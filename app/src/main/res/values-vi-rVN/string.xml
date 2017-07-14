@@ -45,6 +45,19 @@
     <string name="new_point">Giá trị mới</string>
     <string name="create_timer">Tạo bộ đếm ngược</string>
     <string name="errorDate">Ngày giờ chọn không thể nhỏ hơn ngày giờ hiện hành</string>
+    <string name="exit">Bạn muốn thoát ứng dụng?</string>
+    <string name="status">Trạng thái</string>
+    <string name="start">Bắt đầu</string>
+    <string name="stop">Dừng</string>
+    <string name="recently">Gần đây</string>
+    <string name="delete_this">Bạn muốn xóa thẻ này?</string>
+    <string name="max_heart">Nhịp tim cao nhất: 220BPM</string>
+    <string name="status0">Đặt ngón tay của bạn vào camera</string>
+    <string name="status1">Nhận được giá trị. Đang tính toán</string>
+    <string name="status2">Phiên bị hủy. Sai số quá cao.</string>
+    <string name="status3">Đã đo được nhịp tim.</string>
+    <string name="status4">Rất tốt. Giữ điện thoại nằm yên</string>
+    <string name="status5">Hãy giữ điện thoại nằm yên trên tay!</string>
 
 
     <string name="female">Nữ</string>

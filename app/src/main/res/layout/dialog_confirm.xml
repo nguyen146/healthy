@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="350dp"
+    android:layout_width="match_parent"
     android:paddingTop="@dimen/size10"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_dialog_tracker"
@@ -10,6 +10,7 @@
         android:id="@+id/title"
         android:paddingStart="@dimen/size10"
         android:layout_marginTop="@dimen/size20"
+        android:layout_marginBottom="@dimen/size20"
         android:paddingBottom="@dimen/size10"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,16 +18,11 @@
         android:gravity="center"
         android:textSize="@dimen/text_size20"/>
 
-    <LinearLayout
+    <View
+        android:id="@+id/buttonVerticalDivider2"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/textColorWhite"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <View style="@style/divider" />
-    </LinearLayout>
+        android:layout_height="1px"
+        android:background="@color/textColorGray" />
 
     <LinearLayout
         android:layout_width="match_parent"

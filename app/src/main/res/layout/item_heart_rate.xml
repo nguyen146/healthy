@@ -17,44 +17,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/size15">
+            android:padding="@dimen/size10">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/ic_alarm" />
+            <TextView
+                android:id="@+id/bpm2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="42"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size25" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/text_size25"
-                android:layout_weight="2.41"
+                android:layout_weight="8"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:maxLength="21"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_size18" />
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLength="21"
-                    android:maxLines="1"
-                    android:textColor="@color/colorWhite" />
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:text=""
                     android:maxLength="20"
-                    android:maxLines="1"
                     android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/timeStamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:maxLength="21"
+                    android:text="" />
 
             </LinearLayout>
         </LinearLayout>
@@ -70,6 +65,7 @@
             android:text="@string/delete"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size16" />
+
 
         <LinearLayout
             android:layout_width="match_parent"

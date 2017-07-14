@@ -44,13 +44,25 @@
     <string name="setTime">Set time</string>
     <string name="dismiss">Dismiss</string>
     <string name="snooze">Snooze</string>
+    <string name="recently">Recently</string>
+    <string name="delete_this">Are you sure you want to delete this?</string>
 
     <string name="create_tracker">Create tracker</string>
     <string name="create_timer">Create timer</string>
     <string name="errorDate">Date cannot be less than current date</string>
     <string name="chat">Chat</string>
     <string name="notification">Notification</string>
-
+    <string name="exit">Are you sure you want to exit?</string>
+    <string name="status">Status</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="max_heart">Max heart rate: 220BPM</string>
+    <string name="status0">place your finger over the camera sensor and LED</string>
+    <string name="status1">Got a value. Calculating...</string>
+    <string name="status2">Session clear. Large value!!</string>
+    <string name="status3">Measured heart rate.</string>
+    <string name="status4">Good job. Keep the device stationary.</string>
+    <string name="status5">Keep the device stationary in your hands!</string>
     //User
     <string name="errUser">Wrong user name</string>
     <string name="progressing">Progressing...</string>

@@ -8,37 +8,134 @@
 
     <com.htnguyen.healthy.view.component.CameraView
         android:id="@+id/camera_view"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="invisible"
         app:camera_id="any"
         app:show_fps="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_sign_in"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:background="@color/colorBlack"
+        android:orientation="vertical">
+
+        <com.htnguyen.healthy.view.component.GraphView
+            android:id="@+id/graph_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size100" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size150"
+            android:padding="@dimen/size10">
+
+            <FrameLayout
+                android:layout_width="@dimen/size125"
+                android:layout_height="@dimen/size125">
+
+                <com.mikhaellopez.circularprogressbar.CircularProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cpb_background_progressbar_color="@color/colorWhite"
+                    app:cpb_background_progressbar_width="5dp"
+                    app:cpb_progressbar_color="@color/color_blue"
+                    app:cpb_progressbar_width="10dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/bpm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="000"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/size30"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="BPM"
+                        android:textColor="@color/colorWhite" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:weightSum="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/text_size20"
+                    android:text="@string/status"/>
+                <TextView
+                    android:layout_marginStart="@dimen/size20"
+                    android:textColor="@color/colorWhite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/max_heart"/>
+
+                <TextView
+                    android:id="@+id/txtStatus"
+                    android:layout_marginStart="@dimen/size20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/status0"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnStart"
+                    android:layout_width="@dimen/size150"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/start"
+                    android:background="@drawable/bg_btn"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/size10"
+            android:background="@color/colorWhite" />
 
         <TextView
-            android:id="@+id/Bmp"
-            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/size10"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_weight="0.5" />
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size20"
+            android:textColor="@color/colorWhite"
+            android:text="@string/recently"/>
 
-        <TextView
-            android:id="@+id/second"
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="@dimen/size20"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_weight="0.5" />
+            android:layout_height="match_parent"
+            android:id="@+id/recycler_view"
+            android:scrollbars="vertical"/>
+
     </LinearLayout>
 
-    <com.htnguyen.healthy.view.component.GraphView
-        android:id="@+id/graph_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size100"/>
 
 </FrameLayout>

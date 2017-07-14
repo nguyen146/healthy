@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.htnguyen.healthy.model.Heart;
 import com.htnguyen.healthy.model.Timer;
 import com.htnguyen.healthy.service.MyService;
 
@@ -47,8 +48,16 @@ public class DbHelper {
         return sRealm.where(Timer.class).findAll();
     }
 
+    public static RealmResults<Heart> getsHeartRealmResults(){
+        return sRealm.where(Heart.class).findAll();
+    }
+
     public static Timer getTimerById(long id){
         return sRealm.where(Timer.class).equalTo(ID, id).findFirst();
+    }
+
+    public static Heart getHeartById(long id){
+        return sRealm.where(Heart.class).equalTo(ID, id).findFirst();
     }
 
     public static boolean addTimer(Activity activity, Timer timer){
@@ -62,6 +71,35 @@ public class DbHelper {
             sRealm.commitTransaction();
         }
 
+        return false;
+    }
+
+    public static boolean addHeart(Heart heart){
+        try {
+            sRealm.beginTransaction();
+            sRealm.copyToRealm(heart);
+            sRealm.commitTransaction();
+            return true;
+        }catch (Exception e){
+            sRealm.commitTransaction();
+        }
+
+        return false;
+    }
+
+
+    public static boolean deleteHeart(Heart heart){
+        try {
+            sRealm.beginTransaction();
+            RealmQuery<Heart> query = sRealm.where(Heart.class);
+            query.equalTo(ID, heart.getId());
+            RealmResults realmResults = query.findAll();
+            realmResults.deleteAllFromRealm();
+            sRealm.commitTransaction();
+            return true;
+        }catch (Exception e){
+            sRealm.commitTransaction();
+        }
         return false;
     }
 

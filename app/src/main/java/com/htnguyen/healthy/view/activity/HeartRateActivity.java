@@ -3,6 +3,8 @@ package com.htnguyen.healthy.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
@@ -10,13 +12,19 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.htnguyen.healthy.R;
+import com.htnguyen.healthy.dialog.ConfirmDialogHeartRate;
+import com.htnguyen.healthy.model.Heart;
 import com.htnguyen.healthy.model.HeartRateModel;
 import com.htnguyen.healthy.presenter.HeartRatePresenter;
 import com.htnguyen.healthy.util.CaculateHeartRate;
+import com.htnguyen.healthy.util.DbHelper;
 import com.htnguyen.healthy.util.FFT;
+import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.HeartRateView;
+import com.htnguyen.healthy.view.adapter.HeartRateAdapter;
 import com.htnguyen.healthy.view.component.CameraView;
 import com.htnguyen.healthy.view.component.GraphView;
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 import org.opencv.android.BaseLoaderCallback;
@@ -34,12 +42,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.realm.RealmResults;
 
-public class HeartRateActivity extends BaseActivity implements HeartRateView, CameraBridgeViewBase.CvCameraViewListener2{
+public class HeartRateActivity extends BaseActivity implements HeartRateView, CameraBridgeViewBase.CvCameraViewListener2,
+HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
 
     @Inject
     HeartRatePresenter heartRatePresenter;
 
+    private int status = 0;
     private static final String TAG = "OpenCVCamera";
     private CameraView cameraView;
     private int skip = 0;
@@ -49,6 +61,8 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
     private long avgBlackColor;
     private int bpmTemp;
     private int bpm;
+    private HeartRateAdapter heartRateAdapter;
+    RealmResults<Heart> heartList;
     List<HeartRateModel> listBmp = new ArrayList<>();
     CaculateHeartRate caculateHeartRate = new CaculateHeartRate();
     List<Integer> listAvgBpm = new ArrayList<>();
@@ -59,12 +73,17 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
     public final CircularFifoQueue bpmQueue = new CircularFifoQueue(40);
     private final FFT fft = new FFT(sampleSize);
 
-    @BindView(R.id.Bmp)
+    @BindView(R.id.bpm)
     TextView bmpView;
-    @BindView(R.id.second)
-    TextView secondView;
     @BindView(R.id.graph_view)
     GraphView graphView;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+    @BindView(R.id.progress_bar)
+    CircularProgressBar circularProgressBar;
+    @BindView(R.id.txtStatus)
+    TextView statusView;
+
 
 
     public static Intent getCallingIntent(Context context) {
@@ -95,6 +114,7 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
         heartRatePresenter = new HeartRatePresenter();
         heartRatePresenter.setView(this);
         heartRatePresenter.initializeView();
+
 
     }
 
@@ -150,7 +170,12 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
         if ((System.currentTimeMillis() - startTime)/1000d >= 2){
             startTime = System.currentTimeMillis();
             bpmTemp = caculateHeartRate.getBpm(listBmp);
-            avgBpm(bpmTemp);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    avgBpm(bpmTemp);
+                }
+            });
             listBmp.clear();
         }
 
@@ -196,6 +221,19 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(this);
         startTime = System.currentTimeMillis();
+        heartList = DbHelper.getsHeartRealmResults();
+        heartRateAdapter = new HeartRateAdapter(heartList, this);
+        //RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(HeartRateActivity.this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(heartRateAdapter);
+        heartRateAdapter.notifyDataSetChanged();
+
+    }
+
+    public void refreshAdapter(){
+        heartList = DbHelper.getsHeartRealmResults();
+        heartRateAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -204,6 +242,28 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
             @Override
             public void run() {
                 bmpView.setText(String.valueOf(bpm));
+                float progress = (float) (bpm*100)/220f;
+                circularProgressBar.setProgress(progress);
+                switch (status){
+                    case 0:
+                        statusView.setText(getString(R.string.status0));
+                        break;
+                    case 1:
+                        statusView.setText(getString(R.string.status1));
+                        break;
+                    case 2:
+                        statusView.setText(getString(R.string.status2));
+                        break;
+                    case 3:
+                        statusView.setText(getString(R.string.status3));
+                        break;
+                    case 4:
+                        statusView.setText(getString(R.string.status4));
+                        break;
+                    case 5:
+                        statusView.setText(getString(R.string.status5));
+                        break;
+                }
                 graphView.setLineGraphData((int)avgBlackColor);
             }
         });
@@ -211,17 +271,19 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
 
     public void avgBpm(int newBpm){
         if(newBpm == 0){
+            status = 5;
             return;
         }
         if (listAvgBpm.size() == 0){
             listAvgBpm.add(newBpm);
-            Log.e("OVL", "init "+ newBpm);
+            status = 1;
             return;
         }
         int caculate = Math.abs(newBpm - listAvgBpm.get(listAvgBpm.size()-1));
         int upDown = newBpm - listAvgBpm.get(listAvgBpm.size()-1); //>0 up  <0 down
         if(caculate<=2){
             listAvgBpm.add(listAvgBpm.get(listAvgBpm.size()-1));
+            status = 4;
             skip = 0;
         }else if(caculate>2 && caculate <=4){
             if(upDown>0){
@@ -229,6 +291,7 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
             }else {
                 listAvgBpm.add(listAvgBpm.get(listAvgBpm.size()-1) -2);
             }
+            status = 4;
             skip = 0;
         }else if(caculate>4 && caculate <=6){
             if(upDown>0){
@@ -236,6 +299,7 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
             }else {
                 listAvgBpm.add(listAvgBpm.get(listAvgBpm.size()-1) -3);
             }
+            status = 4;
             skip = 0;
         } else if(caculate>6 && caculate <=10){
             if(upDown>0){
@@ -243,15 +307,19 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
             }else {
                 listAvgBpm.add(listAvgBpm.get(listAvgBpm.size()-1) -4);
             }
+            status = 4;
             skip = 0;
         }else {
+            status = 5;
             skip ++;
         }
         bpm = listAvgBpm.get(listAvgBpm.size()-1);
         Log.e("OVL", "Bpm "+ bpm);
         if(skip >=2 ){
             listAvgBpm.clear();
+            status = 2;
             Log.e("OVL", "Wrong session clear!! ");
+            bpm =0;
             skip =0;
             return;
 //            Toast.makeText(HeartRateActivity.this, "Wrong heart rate progress will be Reset",Toast.LENGTH_SHORT).show();
@@ -263,6 +331,10 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
             }
             if(listAvgBpm.contains(total/(listAvgBpm.size()))){
                 Log.e("OVL", "Heart rate"+ total/(listAvgBpm.size()));
+                Heart heart = new Heart(total/(listAvgBpm.size()),"Status", Tools.getCurrentDate());
+                DbHelper.addHeart(heart);
+                refreshAdapter();
+                status = 3;
                 skip =0;
                 listAvgBpm.clear();
                 return;
@@ -270,13 +342,33 @@ public class HeartRateActivity extends BaseActivity implements HeartRateView, Ca
         }
         if (listAvgBpm.size()>=4){
             //this get heart rate :))
+            Heart heart = new Heart(listAvgBpm.get(listAvgBpm.size()-1),"OLA", Tools.getCurrentDate());
+            DbHelper.addHeart(heart);
+            refreshAdapter();
             Log.e("OVL", "Heart rate"+ listAvgBpm.get(listAvgBpm.size()-1));
 //                    Toast.makeText(HeartRateActivity.this, "Heart rate is: " + listAvgBpm.get(listAvgBpm.size()-1),Toast.LENGTH_SHORT).show();
+            status =3;
             skip =0;
             listAvgBpm.clear();
-            return;
         }
 
     }
 
+    @Override
+    public void onDelete(Heart heart) {
+        new ConfirmDialogHeartRate(HeartRateActivity.this, this, getString(R.string.delete_this), heart).show();
+    }
+
+    @Override
+    public void onConfirm(Heart heart) {
+        DbHelper.deleteHeart(heart);
+        refreshAdapter();
+    }
+
+    @OnClick(R.id.btnStart)
+    public void onStartHeart(){
+        Heart heart = new Heart(1,"OLA", Tools.getCurrentDate());
+        DbHelper.addHeart(heart);
+        refreshAdapter();
+    }
 }

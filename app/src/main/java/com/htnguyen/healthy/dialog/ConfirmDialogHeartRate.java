@@ -10,22 +10,22 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.htnguyen.healthy.R;
-import com.htnguyen.healthy.model.Category;
+import com.htnguyen.healthy.model.Heart;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ConfirmDialog extends Dialog{
+public class ConfirmDialogHeartRate extends Dialog{
     @BindView(R.id.title)
     TextView titleView;
 
     private OnConfirmListener onConfirmListener;
-    private final Category category;
-    public ConfirmDialog(@NonNull Context context, OnConfirmListener onConfirmListener, String title, Category category) {
+    private Heart heart;
+    public ConfirmDialogHeartRate(@NonNull Context context, OnConfirmListener onConfirmListener, String title, Heart heart) {
         super(context);
         this.onConfirmListener = onConfirmListener;
-        this.category = category;
+        this.heart = heart;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_confirm);
@@ -39,7 +39,7 @@ public class ConfirmDialog extends Dialog{
 
     @OnClick(R.id.btnOk)
     public void onOK(){
-        onConfirmListener.onConfirm(category);
+        onConfirmListener.onConfirm(heart);
         dismiss();
     }
 
@@ -49,6 +49,6 @@ public class ConfirmDialog extends Dialog{
     }
 
     public interface OnConfirmListener{
-        void onConfirm(Category category);
+        void onConfirm(Heart heart);
     }
 }

@@ -32,7 +32,6 @@
             android:screenOrientation="sensorPortrait" />
         <activity android:name=".view.activity.ChatActivity" />
         <activity android:name=".view.activity.SettingUserActivity" />
-        <activity android:name=".view.activity.DueDayActivity" />
 
         <service
             android:name=".service.MyService"

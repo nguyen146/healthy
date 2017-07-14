@@ -32,7 +32,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.htnguyen.healthy.R;
+import com.htnguyen.healthy.dialog.ConfirmDialog;
 import com.htnguyen.healthy.dialog.SignInDialog;
+import com.htnguyen.healthy.model.Category;
 import com.htnguyen.healthy.model.User;
 import com.htnguyen.healthy.presenter.HealthyPresenter;
 import com.htnguyen.healthy.util.Constants;
@@ -55,7 +57,8 @@ import static com.htnguyen.healthy.R.id.txt_user_name;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, HealthyView,
-        SignInDialog.onLoginListener,UserFragment.OnUserClickListener, View.OnClickListener {
+        SignInDialog.onLoginListener,UserFragment.OnUserClickListener, View.OnClickListener ,
+        ConfirmDialog.OnConfirmListener{
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -173,7 +176,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            new ConfirmDialog(MainActivity.this,this, getString(R.string.exit), new Category()).show();
         }
     }
 
@@ -265,35 +268,6 @@ public class MainActivity extends BaseActivity
     @OnClick(R.id.fab)
     void NavigationToHeartRateActivity(){
         healthyPresenter.navigateToHeartRateActivity();
-//        Timer timer = new Timer("No one","Description",
-//                DbHelper.getRandomPendingId(),
-//                Tools.convertStringToDate(Tools.getCurrentDate()));
-//        if(DbHelper.addTimer(this,timer)){
-//            Toast.makeText(MainActivity.this,"Succsess",Toast.LENGTH_SHORT).show();
-//        }else {
-//            Toast.makeText(MainActivity.this,"fail",Toast.LENGTH_SHORT).show();
-//        }
-//        Items items = new Items(Tools.getCurrentDate(), "Chao", 100);
-//        final List<Items> integers = new ArrayList<>();
-//        integers.add(items);
-//
-//        Category category = new Category(1,"hai","Heloo0","Can nang", integers);
-//
-//        mDatabase.child("Test").setValue(category);
-//        mDatabase.child("Test").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Category category1 = dataSnapshot.getValue(Category.class);
-//
-//
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
     }
 
 
@@ -373,4 +347,9 @@ public class MainActivity extends BaseActivity
         fragmentManager.beginTransaction().replace(R.id.content_main, chatFragment).commit();
     }
 
+
+    @Override
+    public void onConfirm(Category category) {
+        finish();
+    }
 }
