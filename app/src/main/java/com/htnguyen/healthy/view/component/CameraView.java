@@ -14,4 +14,5 @@ public class CameraView extends JavaCameraView {
     public CameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
 }

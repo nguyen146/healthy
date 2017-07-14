@@ -146,6 +146,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
     public void onCameraViewStarted(int width, int height) {
         startTime = System.currentTimeMillis();
         cameraView.setEffect(android.hardware.Camera.Parameters.FLASH_MODE_TORCH);
+//        cameraView.setPreviewFPS(10d, 15d);
     }
 
     @Override
@@ -220,6 +221,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
         cameraView = (CameraView) findViewById(R.id.camera_view);
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(this);
+
         startTime = System.currentTimeMillis();
         heartList = DbHelper.getsHeartRealmResults();
         heartRateAdapter = new HeartRateAdapter(heartList, this);

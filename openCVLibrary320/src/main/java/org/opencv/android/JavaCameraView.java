@@ -1,7 +1,5 @@
 package org.opencv.android;
 
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -17,6 +15,8 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.List;
 
 /**
  * This class is an implementation of the Bridge View between OpenCV and Java Camera.
@@ -361,8 +361,30 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
     public void setEffect(String effect) {
         if (mCamera != null){
             Camera.Parameters params = mCamera.getParameters();
+            List<int[]> frameRates = params.getSupportedPreviewFpsRange();
+            for(int i = 0 ; i<frameRates.size(); i++){
+                int minFps = (frameRates.get(i))[Camera.Parameters.PREVIEW_FPS_MIN_INDEX];
+                int maxFps = (frameRates.get(i))[Camera.Parameters.PREVIEW_FPS_MAX_INDEX];
+                if(minFps == maxFps && minFps <=15000 && maxFps >= 10000){
+                    params.setPreviewFpsRange(minFps, maxFps);
+                    break;
+                }
+                if (minFps>=10000 && maxFps<=15000){
+                    params.setPreviewFpsRange(minFps, maxFps);
+                }
+                Log.v("MNWO", "preview fps: " + minFps + ", " + maxFps);
+            }
             params.setFlashMode(effect);
+
             mCamera.setParameters(params);
         }
     }
+
+//    public void setPreviewFPS(){
+//        if (mCamera != null) {
+//            Camera.Parameters params = mCamera.getParameters();
+//
+//            mCamera.setParameters(params);
+//        }
+//    }
 }
