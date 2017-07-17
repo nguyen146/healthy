@@ -1,5 +1,6 @@
 package com.htnguyen.healthy.view.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.htnguyen.healthy.R;
 import com.htnguyen.healthy.model.Heart;
+import com.htnguyen.healthy.util.Tools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,10 +19,12 @@ public class HeartRateAdapter extends RecyclerView.Adapter<HeartRateAdapter.MyVi
 
     private RealmResults<Heart> heartList;
     private HeartAdapterListener heartAdapterListener;
+    private Context context;
 
-    public HeartRateAdapter(RealmResults<Heart> heartList, HeartAdapterListener heartAdapterListener) {
+    public HeartRateAdapter(RealmResults<Heart> heartList, HeartAdapterListener heartAdapterListener, Context context) {
         this.heartList = heartList;
         this.heartAdapterListener = heartAdapterListener;
+        this.context = context;
     }
 
     @Override
@@ -33,8 +37,18 @@ public class HeartRateAdapter extends RecyclerView.Adapter<HeartRateAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Heart heart = heartList.get(holder.getAdapterPosition());
-        holder.titleView.setText(heart.getTitle());
-        holder.timeStamp.setText(heart.getTimeStamp());
+        switch (heart.getStatus()){
+            case 0:
+                holder.titleView.setText(context.getString(R.string.StatusHeartRate1));
+                break;
+            case 1:
+                holder.titleView.setText(context.getString(R.string.StatusHeartRate2));
+                break;
+            case 2:
+                holder.titleView.setText(context.getString(R.string.StatusHeartRate3));
+                break;
+        }
+        holder.timeStamp.setText(Tools.convertDateToString(heart.getTimeStamp()));
         holder.bpmView.setText(String.valueOf(heart.getHeart()));
         holder.deleteView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,10 +1,13 @@
 package com.htnguyen.healthy.model;
 
+import java.util.List;
+
 public class Chat {
     private String key;
     private String sendId;
     private String sendMessage;
     private long timeStamp;
+    private List<TimerSender> timer;
 
     public Chat() {
     }
@@ -13,6 +16,13 @@ public class Chat {
         this.sendId = sendId;
         this.sendMessage = sendMessage;
         this.timeStamp = timeStamp;
+    }
+
+    public Chat(String sendId, String sendMessage, long timeStamp, List<TimerSender> timer) {
+        this.sendId = sendId;
+        this.sendMessage = sendMessage;
+        this.timeStamp = timeStamp;
+        this.timer = timer;
     }
 
     public String getKey() {
@@ -45,5 +55,13 @@ public class Chat {
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public List<TimerSender> getTimer() {
+        return timer;
+    }
+
+    public void setTimer(List<TimerSender> timer) {
+        this.timer = timer;
     }
 }

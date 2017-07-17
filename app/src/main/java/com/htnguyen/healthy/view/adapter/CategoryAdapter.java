@@ -57,7 +57,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                decription = decription.concat(" (" +context.getString(R.string.last_update)+
+                decription = decription.concat("\r\n(" +context.getString(R.string.last_update)+
                         itemses.get(itemses.size()-1).getDate())+")";
             }
         }

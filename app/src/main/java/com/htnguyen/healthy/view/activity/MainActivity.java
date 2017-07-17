@@ -33,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.htnguyen.healthy.R;
 import com.htnguyen.healthy.dialog.ConfirmDialog;
+import com.htnguyen.healthy.dialog.DialogResult;
 import com.htnguyen.healthy.dialog.SignInDialog;
 import com.htnguyen.healthy.model.Category;
 import com.htnguyen.healthy.model.User;
@@ -41,7 +42,6 @@ import com.htnguyen.healthy.util.Constants;
 import com.htnguyen.healthy.util.NetworkConnectionUtil;
 import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.HealthyView;
-import com.htnguyen.healthy.view.fragment.ChatFragment;
 import com.htnguyen.healthy.view.fragment.MainFragment;
 import com.htnguyen.healthy.view.fragment.TimerFragment;
 import com.htnguyen.healthy.view.fragment.TrackerFragment;
@@ -51,13 +51,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static com.htnguyen.healthy.R.id.txt_user_name;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, HealthyView,
-        SignInDialog.onLoginListener,UserFragment.OnUserClickListener, View.OnClickListener ,
+        SignInDialog.onLoginListener, View.OnClickListener ,
         ConfirmDialog.OnConfirmListener{
 
     private FirebaseAuth mAuth;
@@ -104,7 +103,7 @@ public class MainActivity extends BaseActivity
         emailUserView.setOnClickListener(this);
         imgUserView.setOnClickListener(this);
         ButterKnife.bind(this);
-        fab.show();
+        fab.hide();
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         //Setting
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -196,6 +195,11 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            if(!loginPreferences.getString("username", "").equals("")){
+                navigator.navigateToSettingUser(MainActivity.this);
+            }else {
+                Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
@@ -228,7 +232,11 @@ public class MainActivity extends BaseActivity
                 break;
 
             case R.id.nav_settings:
-
+                if(!loginPreferences.getString("username", "").equals("")){
+                    navigator.navigateToSettingUser(MainActivity.this);
+                }else {
+                    Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case  R.id.nav_heart:
@@ -250,7 +258,7 @@ public class MainActivity extends BaseActivity
                 break;
 
             case R.id.nav_contact:
-
+                new DialogResult(MainActivity.this, getString(R.string.contact_me)).show();
                 break;
 
         }
@@ -265,18 +273,17 @@ public class MainActivity extends BaseActivity
         navigator.navigateToHeartRate(MainActivity.this);
     }
 
-    @OnClick(R.id.fab)
-    void NavigationToHeartRateActivity(){
-        healthyPresenter.navigateToHeartRateActivity();
-    }
-
-
     public void hideFab() {
         fab.hide();
     }
 
+    public Bitmap getImgUser(){
+        return Tools.convertImageViewToBitmap(imgUserView);
+    }
+
     @Override
     public void onLoginSuccess(FirebaseUser firebaseUser) {
+        replaceFragment(R.id.content_main, new MainFragment());
         final DatabaseReference user = mDatabase.child(Constants.TABLE_USER).child(firebaseUser.getUid());
         user.addValueEventListener(new ValueEventListener() {
             @Override
@@ -341,11 +348,11 @@ public class MainActivity extends BaseActivity
         fragmentManager.beginTransaction().replace(R.id.content_main, userFragment).commit();
     }
 
-    @Override
-    public void onUserClick(ChatFragment chatFragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_main, chatFragment).commit();
-    }
+//    @Override
+//    public void onUserClick(ChatFragment chatFragment) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_main, chatFragment).commit();
+//    }
 
 
     @Override

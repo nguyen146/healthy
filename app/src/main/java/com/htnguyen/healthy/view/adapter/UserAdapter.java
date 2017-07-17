@@ -1,6 +1,7 @@
 package com.htnguyen.healthy.view.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +41,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHoler>{
 
     @Override
     public void onBindViewHolder(MyViewHoler holder, int position) {
-        User user = userList.get(position);
-        holder.imgUserView.setImageResource(R.drawable.user_default);
+        User user = userList.get(holder.getAdapterPosition());
+        Bitmap img = getImageUser(user);
+        if (img !=null) holder.imgUserView.setImageBitmap(img);
+        else {
+            holder.imgUserView.setImageResource(R.drawable.user_default);
+        }
         holder.nameUserView.setText(user.getUserName());
-        if(user.getGender() == 0){
-            holder.onlineView.setText(context.getString(R.string.female));
+        if(user.getGender() == 1){
+            holder.sexView.setText(context.getString(R.string.female));
         }else {
             holder.sexView.setText(context.getString(R.string.male));
         }
@@ -82,5 +87,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHoler>{
 
     public interface OnUserClickListener{
         void onUserClick(int position);
+    }
+
+    public Bitmap getImageUser(User user){
+        if (user.getImage() == null) return null;
+        byte[] byte1 = Tools.stringToByteArray(user.getImage().trim());
+        return Tools.convertByteArrayToBitmap(byte1);
     }
 }

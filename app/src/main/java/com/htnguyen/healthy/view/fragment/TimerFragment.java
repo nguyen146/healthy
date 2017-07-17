@@ -2,7 +2,6 @@ package com.htnguyen.healthy.view.fragment;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,7 +27,7 @@ import io.realm.RealmResults;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
+public class TimerFragment extends BaseFragment implements
         TimerAdapter.TimerAdapterListener,
         CreateTimerDialog.OnCreateTimerListener{
 
@@ -50,11 +49,7 @@ public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.On
         View view = inflater.inflate(R.layout.fragment_timer, container, false);
         unbinder = ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).hideFab();
-        //SwipeRefresh
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_dark,
-                android.R.color.holo_green_dark, android.R.color.holo_blue_bright);
-        swipeRefreshLayout.setOnRefreshListener(this);
+
         //RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -65,17 +60,6 @@ public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.On
         mTimerAdapter.notifyDataSetChanged();
 
         return view;
-    }
-
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Refresh adapter here
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 2000);
     }
 
     @Override
@@ -107,9 +91,9 @@ public class TimerFragment extends BaseFragment implements SwipeRefreshLayout.On
                 DbHelper.getRandomPendingId(),
                 Tools.convertStringToDate(date));
         if(DbHelper.addTimer(getActivity(),timer)){
-            showToastMessage("Succsess");
+            showToastMessage(getString(R.string.saved));
         }else {
-            showToastMessage("Save fail");
+            showToastMessage(getString(R.string.errsaved));
         }
         refeshAdapter();
     }

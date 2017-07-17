@@ -1,6 +1,7 @@
 package com.htnguyen.healthy.model;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -9,17 +10,17 @@ public class Heart extends RealmObject{
     @PrimaryKey
     private long id;
     private int heart;
-    private String title;
-    private String timeStamp;
+    private int status;
+    private Date timeStamp;
 
     public Heart() {
 
     }
 
-    public Heart(int heart, String title, String timeStamp) {
+    public Heart(int heart, int status, Date timeStamp) {
         this.id = Calendar.getInstance().getTimeInMillis();
         this.heart = heart;
-        this.title = title;
+        this.status = status;
         this.timeStamp = timeStamp;
     }
 
@@ -39,19 +40,19 @@ public class Heart extends RealmObject{
         this.heart = heart;
     }
 
-    public String getTitle() {
-        return title;
+    public int getStatus() {
+        return status;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public String getTimeStamp() {
+    public Date getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(String timeStamp) {
+    public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
     }
 }

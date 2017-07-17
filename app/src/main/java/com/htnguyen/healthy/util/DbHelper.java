@@ -15,6 +15,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class DbHelper {
     private static final String DATABASE_NAME = "Healthy";
@@ -23,6 +24,7 @@ public class DbHelper {
     private static final String DESCRIPTION = "descriptionItem";
     private static final String WAKE_UP_TIME = "wakeUpTime";
     private static final String PENDING_ID = "pendingId";
+    private static final String TIME_STAMP = "timeStamp";
     private static RealmResults<Timer> timerRealmResults;
     private static Realm sRealm;
     private static DbHelper sInstance = null;
@@ -49,7 +51,7 @@ public class DbHelper {
     }
 
     public static RealmResults<Heart> getsHeartRealmResults(){
-        return sRealm.where(Heart.class).findAll();
+        return sRealm.where(Heart.class).findAllSorted(ID, Sort.DESCENDING);
     }
 
     public static Timer getTimerById(long id){
@@ -150,7 +152,7 @@ public class DbHelper {
     private static void cancelAlarmWakeUp(Activity mActivity, Timer mTimer) {
         Intent service = new Intent(mActivity, MyService.class);
         service.setAction(Constants.ACTION.START_SERVICE);
-        service.putExtra(Constants.KEY.TIMER_KEY, mTimer);
+        service.putExtra(Constants.KEY.TIMER_KEY, mTimer.getId());
         PendingIntent sender = PendingIntent.getService(mActivity, mTimer.getPendingId(), service,
                 0);
         AlarmManager alarmManager = (AlarmManager) mActivity.getBaseContext().

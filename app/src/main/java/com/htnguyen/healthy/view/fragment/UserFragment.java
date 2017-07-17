@@ -2,8 +2,8 @@ package com.htnguyen.healthy.view.fragment;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,7 +17,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.htnguyen.healthy.R;
+import com.htnguyen.healthy.dialog.ChatDialog;
 import com.htnguyen.healthy.model.User;
+import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.activity.MainActivity;
 import com.htnguyen.healthy.view.adapter.UserAdapter;
 
@@ -31,9 +33,9 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, UserAdapter.OnUserClickListener{
+public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, UserAdapter.OnUserClickListener {
 
-    private OnUserClickListener userClickListener;
+    //    private OnUserClickListener userClickListener;
     public static final String U_ID_USER = "UidUser";
     private Unbinder unbinder;
     private UserAdapter userAdapter;
@@ -50,11 +52,11 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnUserClickListener ){
-            userClickListener = (OnUserClickListener ) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement onViewSelected");
-        }
+//        if (context instanceof OnUserClickListener ){
+//            userClickListener = (OnUserClickListener ) context;
+//        } else {
+//            throw new RuntimeException(context.toString() + " must implement onViewSelected");
+//        }
     }
 
     @Override
@@ -63,7 +65,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         unbinder = ButterKnife.bind(this, view);
         //SwipeRefresh
-        ((MainActivity)getActivity()).hideFab();
+        ((MainActivity) getActivity()).hideFab();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_dark,
                 android.R.color.holo_green_dark, android.R.color.holo_blue_bright);
@@ -73,7 +75,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.
                 VERTICAL));
-        userAdapter = new UserAdapter(userList,this, getContext());
+        userAdapter = new UserAdapter(userList, this, getContext());
         recyclerView.setAdapter(userAdapter);
         userAdapter.notifyDataSetChanged();
         getUser();
@@ -81,14 +83,14 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         return view;
     }
 
-    public void getUser(){
+    public void getUser() {
 
         mUsers.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    User user = dataSnapshot.getValue(User.class);
-                    userList.add(user);
-                    userAdapter.notifyDataSetChanged();
+                User user = dataSnapshot.getValue(User.class);
+                userList.add(user);
+                userAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -115,23 +117,27 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Refresh adapter here
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 2000);
+        swipeRefreshLayout.setRefreshing(false);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //Refresh adapter here
+//
+//            }
+//        }, 2000);
     }
 
     @Override
     public void onUserClick(int position) {
 //        showToastMessage(userList.get(position).getUserName());
-        ChatFragment chatFragment = new ChatFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(U_ID_USER, userList.get(position).getUserId());
-        chatFragment.setArguments(bundle);
-        userClickListener.onUserClick(chatFragment);
+//        ChatFragment chatFragment = new ChatFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString(U_ID_USER, userList.get(position).getUserId());
+//        chatFragment.setArguments(bundle);
+        Bitmap userOther = getImageUser(userList.get(position));
+        Bitmap user = ((MainActivity)getActivity()).getImgUser();
+        new ChatDialog(getContext(), userList.get(position).getUserId(), getActivity(), userOther, user).show();
+//        userClickListener.onUserClick(chatFragment);
     }
 
     @Override
@@ -140,7 +146,13 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         super.onDestroyView();
     }
 
-    public interface OnUserClickListener {
-        void onUserClick(ChatFragment chatFragment);
-        }
+
+    //    public interface OnUserClickListener {
+//        void onUserClick(ChatFragment chatFragment);
+//        }
+    public Bitmap getImageUser(User user) {
+        if (user.getImage() == null) return null;
+        byte[] byte1 = Tools.stringToByteArray(user.getImage().trim());
+        return Tools.convertByteArrayToBitmap(byte1);
+    }
 }

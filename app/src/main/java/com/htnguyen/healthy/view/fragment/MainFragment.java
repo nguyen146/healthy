@@ -3,42 +3,41 @@ package com.htnguyen.healthy.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.htnguyen.healthy.R;
-import com.htnguyen.healthy.model.Category;
-import com.htnguyen.healthy.view.adapter.CategoryAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.htnguyen.healthy.dialog.CalculateBMI;
+import com.htnguyen.healthy.dialog.CalculateFat;
+import com.htnguyen.healthy.dialog.CalculateMaxHeart;
+import com.htnguyen.healthy.dialog.CalculateWater;
+import com.htnguyen.healthy.model.Heart;
+import com.htnguyen.healthy.model.Timer;
+import com.htnguyen.healthy.navigation.Navigator;
+import com.htnguyen.healthy.util.DbHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class MainFragment extends BaseFragment{
 
     private Unbinder unbinder;
-    private CategoryAdapter categoryAdapter;
-    private List<Category> categoryList = new ArrayList<>();
-    private List<Category> categoryListRemove = new ArrayList<>();
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
-    @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
 
 
+    @BindView(R.id.bpm)
+    TextView bpmView;
+    @BindView(R.id.timer)
+    TextView timerView;
     public MainFragment() {
         // Required empty public constructor
     }
@@ -55,21 +54,20 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, view);
-        //SwipeRefresh
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_dark,
-                android.R.color.holo_green_dark, android.R.color.holo_blue_bright);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        //RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.
-                VERTICAL));
+        RealmResults<Heart> hearts = DbHelper.getsHeartRealmResults();
+            int heart = 0;
+            for(int i=0; i<hearts.size(); i++){
+                heart += hearts.get(i).getHeart();
+            }
+            if (hearts.size()>0)
+            bpmView.setText(String.valueOf((heart/hearts.size())));
+        else {
+                bpmView.setText("0");
+            }
 
-//        categoryAdapter = new CategoryAdapter(this, categoryList, context);
-//        recyclerView.setAdapter(categoryAdapter);
-//        categoryAdapter.notifyDataSetChanged();
-//        init();
+        RealmResults<Timer> timers = DbHelper.getsItemRealmResults();
+            timerView.setText(String.valueOf(timers.size()));
+
         return view;
     }
 
@@ -83,42 +81,45 @@ public class MainFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void onStart() {
         super.onStart();
-//        categoryAdapter.notifyDataSetChanged();
 
     }
 
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //Refresh adapter here
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 2000);
+    @OnClick(R.id.btnHeart)
+    public void onHeart(){
+        new Navigator().navigateToHeartRate(getActivity());
     }
 
-//    public void init(){
-//        List<Items> itemses = new ArrayList<>();
-//
-//        Items items = new Items(Tools.getCurrentDate(), "+2 value", 10);
-//        itemses.add(items);
-//        Items items2 = new Items(Tools.getCurrentDate(), "+2 value", 5);
-//        itemses.add(items2);
-//        Items items3 = new Items(Tools.getCurrentDate(), "+2 value", 15);
-//        itemses.add(items3);
-//
-//        final Category category = new Category(Tools.getCurrentDate(),"Weight","Can nang", itemses);
-//        mCategory.push().setValue(category);
-//
-//    }
+    @OnClick(R.id.btnTimer)
+    public void ontimer(){
+        TimerFragment timerFragment = new TimerFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-    public void removeList(){
-        for(int i = 0; i<categoryList.size(); i++){
-            if(categoryListRemove.equals(categoryList.get(i))){
-                categoryList.remove(i);
-            }
-        }
-        categoryAdapter.notifyDataSetChanged();
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack if needed
+        transaction.replace(R.id.content_main, timerFragment);
+        transaction.addToBackStack(null);
+
+// Commit the transaction
+        transaction.commit();
+    }
+
+    @OnClick(R.id.btnMaxheart)
+    public void maxHeart(){
+        new CalculateMaxHeart(getActivity()).show();
+    }
+
+    @OnClick(R.id.btnBmi)
+    public void bmi(){
+        new CalculateBMI(getActivity()).show();
+    }
+
+    @OnClick(R.id.btnWater)
+    public void water(){
+        new CalculateWater(getActivity()).show();
+    }
+
+    @OnClick(R.id.btnFat)
+    public void fat(){
+        new CalculateFat(getActivity()).show();
     }
 }

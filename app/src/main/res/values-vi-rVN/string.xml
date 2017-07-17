@@ -16,11 +16,11 @@
     <string name="personInfo">Thông tin cá nhân</string>
     <string name="gender">Giới tính</string>
     <string name="heart">Chỉ số nhịp tim</string>
-    <string name="height">Chiều cao</string>
+    <string name="height">Chiều cao(cm)</string>
     <string name="userName">Họ tên</string>
-    <string name="weight">Cân nặng</string>
-    <string name="camera">Camera</string>
-    <string name="gallery">Gallery</string>
+    <string name="weight">Cân nặng(Kg)</string>
+    <string name="camera">Chụp ảnh</string>
+    <string name="gallery">Thư viện</string>
     <string name="tittleChooseImage">Chọn ảnh</string>
     <string name="Save">Lưu lại</string>
     <string name="errValue">Không được để trống</string>
@@ -43,7 +43,7 @@
     <string name="errSetting">Bạn chưa đăng nhập</string>
     <string name="hint_description">Điền ghi chú của bạn ở đây</string>
     <string name="new_point">Giá trị mới</string>
-    <string name="create_timer">Tạo bộ đếm ngược</string>
+    <string name="create_timer">Tạo thông báo</string>
     <string name="errorDate">Ngày giờ chọn không thể nhỏ hơn ngày giờ hiện hành</string>
     <string name="exit">Bạn muốn thoát ứng dụng?</string>
     <string name="status">Trạng thái</string>
@@ -51,13 +51,28 @@
     <string name="stop">Dừng</string>
     <string name="recently">Gần đây</string>
     <string name="delete_this">Bạn muốn xóa thẻ này?</string>
-    <string name="max_heart">Nhịp tim cao nhất: 220BPM</string>
-    <string name="status0">Đặt ngón tay của bạn vào camera</string>
+    <string name="max_heart">Nhịp tim cao nhất: 200BPM</string>
+    <string name="status0">Nhấn bắt đầu và đặt ngón tay của bạn vào camera và led</string>
     <string name="status1">Nhận được giá trị. Đang tính toán</string>
     <string name="status2">Phiên bị hủy. Sai số quá cao.</string>
     <string name="status3">Đã đo được nhịp tim.</string>
     <string name="status4">Rất tốt. Giữ điện thoại nằm yên</string>
     <string name="status5">Hãy giữ điện thoại nằm yên trên tay!</string>
+    <string name="BMI0">Thấp (gầy)</string>
+    <string name="BMI1">Bình thường</string>
+    <string name="BMI2">Thừa cân</string>
+    <string name="BMI3">Tiền béo phì</string>
+    <string name="BMI4">Béo phì độ I</string>
+    <string name="BMI5">Béo phì độ II</string>
+    <string name="BMI6">Béo phì độ III</string>
+    <string name="StatusHeartRate1">Nhịp tim chậm</string>
+    <string name="StatusHeartRate2">Nhịp tim bình thường</string>
+    <string name="StatusHeartRate3">Nhịp tim cao</string>
+    <string name="null_message">Tin nhắn rỗng</string>
+    <string name="send_clock"><u>Gửi cho bạn một thông báo.</u></string>
+    <string name="received_timer">Chi tiết thông báo</string>
+    <string name="errTimer">Đã quá hạn giờ</string>
+    <string name="youSendNotifi">Bạn đã gửi một thông báo.</string>
 
 
     <string name="female">Nữ</string>
@@ -99,4 +114,25 @@
     <string name="errName">Tên không được để trống</string>
     <string name="createAccount">Đang xử lý...</string>
     <string name="authenticating">Đang xác thực...</string>
+
+
+    <string name="total">Tổng cộng</string>
+    <string name="timer">Thông báo</string>
+    <string name="maxHeart">Nhịp tim cao nhất</string>
+    <string name="water">Lượng nước cần thiết</string>
+    <string name="fat">Tỷ lệ mỡ</string>
+    <string name="caculate">Tính toán</string>
+    <string name="Back">Trở về</string>
+    <string name="your_max_heart">Nhịp tim cao nhất: </string>
+    <string name="non_calculate">Chưa tính toán</string>
+    <string name="age">Tuổi</string>
+    <string name="errage">Đây không phải là tuổi</string>
+    <string name="litre">lít</string>
+    <string name="errvalue">Sai giá trị</string>
+    <string name="your_water">Lượng nước bạn cần uống hằng ngày: </string>
+    <string name="your_bmi">Bmi: </string>
+    <string name="you">Bạn đang </string>
+    <string name="beat_perminutes">nhịp/phút</string>
+    <string name="percent">phần trăm</string>
+    <string name="contact_me">Tên: Nguyen Huynh dev \t\n Số điện thoại: 0907380095 \t\n Email: huynhthanhnguyenit@gmail.com</string>
 </resources>

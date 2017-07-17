@@ -2,7 +2,6 @@ package com.htnguyen.healthy.model;
 
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +9,7 @@ import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Timer extends RealmObject implements Parcelable {
+public class Timer extends RealmObject{
     @PrimaryKey
     private long id;
     private String title;
@@ -29,38 +28,18 @@ public class Timer extends RealmObject implements Parcelable {
         this.wakeUpTime = wakeUpTime;
     }
 
+    public Timer(String title, String description, Date wakeUpTime) {
+        this.title = title;
+        this.description = description;
+        this.wakeUpTime = wakeUpTime;
+    }
+
     protected Timer(Parcel in) {
         id = in.readLong();
         title = in.readString();
         description = in.readString();
         pendingId = in.readInt();
         wakeUpTime = new Date(in.readLong());
-    }
-
-    public static final Creator<Timer> CREATOR = new Creator<Timer>() {
-        @Override
-        public Timer createFromParcel(Parcel in) {
-            return new Timer(in);
-        }
-
-        @Override
-        public Timer[] newArray(int size) {
-            return new Timer[size];
-        }
-    };
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeString(description);
-        dest.writeInt(pendingId);
-        dest.writeLong(wakeUpTime.getTime());
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
 

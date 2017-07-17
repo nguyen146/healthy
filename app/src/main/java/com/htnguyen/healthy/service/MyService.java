@@ -108,7 +108,7 @@ public class MyService extends Service{
         Context context = this.getBaseContext();
         Intent service = new Intent(context, MyService.class);
         service.setAction(Constants.ACTION.START_SERVICE);
-        service.putExtra(Constants.KEY.TIMER_KEY, mTimer);
+        service.putExtra(Constants.KEY.TIMER_KEY, mTimer.getId());
         PendingIntent sender = PendingIntent.getService(context, mTimer.getPendingId(), service, 0);
         AlarmManager alarmManager = (AlarmManager) context.
                 getSystemService(Context.ALARM_SERVICE);

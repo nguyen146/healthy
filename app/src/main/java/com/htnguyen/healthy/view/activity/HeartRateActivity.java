@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.htnguyen.healthy.R;
@@ -61,6 +62,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
     private long avgBlackColor;
     private int bpmTemp;
     private int bpm;
+    private boolean startCapture =false;
     private HeartRateAdapter heartRateAdapter;
     RealmResults<Heart> heartList;
     List<HeartRateModel> listBmp = new ArrayList<>();
@@ -83,7 +85,8 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
     CircularProgressBar circularProgressBar;
     @BindView(R.id.txtStatus)
     TextView statusView;
-
+    @BindView(R.id.btnStart)
+    Button btnStart;
 
 
     public static Intent getCallingIntent(Context context) {
@@ -95,7 +98,8 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
-                    cameraView.enableView();
+                    btnStart.setEnabled(true);
+                    startCapture = true;
                     break;
                 default:
                     super.onManagerConnected(status);
@@ -152,6 +156,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
     @Override
     public void onCameraViewStopped() {
         cameraView.setEffect(android.hardware.Camera.Parameters.FLASH_MODE_OFF);
+        cameraView.disableView();
     }
 
     @Override
@@ -221,10 +226,11 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
         cameraView = (CameraView) findViewById(R.id.camera_view);
         cameraView.setVisibility(SurfaceView.VISIBLE);
         cameraView.setCvCameraViewListener(this);
-
+        btnStart.setText(getString(R.string.start));
+        btnStart.setEnabled(false);
         startTime = System.currentTimeMillis();
         heartList = DbHelper.getsHeartRealmResults();
-        heartRateAdapter = new HeartRateAdapter(heartList, this);
+        heartRateAdapter = new HeartRateAdapter(heartList, this, this);
         //RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(HeartRateActivity.this));
         recyclerView.setHasFixedSize(true);
@@ -244,7 +250,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
             @Override
             public void run() {
                 bmpView.setText(String.valueOf(bpm));
-                float progress = (float) (bpm*100)/220f;
+                float progress = (float) (bpm*100)/200f;
                 circularProgressBar.setProgress(progress);
                 switch (status){
                     case 0:
@@ -333,7 +339,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
             }
             if(listAvgBpm.contains(total/(listAvgBpm.size()))){
                 Log.e("OVL", "Heart rate"+ total/(listAvgBpm.size()));
-                Heart heart = new Heart(total/(listAvgBpm.size()),"Status", Tools.getCurrentDate());
+                Heart heart = new Heart(total/(listAvgBpm.size()),Tools.statusHeartRate(listAvgBpm.get(listAvgBpm.size()-1)), Tools.convertStringToDate(Tools.getCurrentDate()));
                 DbHelper.addHeart(heart);
                 refreshAdapter();
                 status = 3;
@@ -344,7 +350,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
         }
         if (listAvgBpm.size()>=4){
             //this get heart rate :))
-            Heart heart = new Heart(listAvgBpm.get(listAvgBpm.size()-1),"OLA", Tools.getCurrentDate());
+            Heart heart = new Heart(listAvgBpm.get(listAvgBpm.size()-1),Tools.statusHeartRate(listAvgBpm.get(listAvgBpm.size()-1)), Tools.convertStringToDate(Tools.getCurrentDate()));
             DbHelper.addHeart(heart);
             refreshAdapter();
             Log.e("OVL", "Heart rate"+ listAvgBpm.get(listAvgBpm.size()-1));
@@ -369,8 +375,21 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
 
     @OnClick(R.id.btnStart)
     public void onStartHeart(){
-        Heart heart = new Heart(1,"OLA", Tools.getCurrentDate());
-        DbHelper.addHeart(heart);
-        refreshAdapter();
+        if(startCapture){
+            cameraView.enableView();
+            btnStart.setText(getString(R.string.stop));
+            startCapture = false;
+        }else {
+            bmpView.setText(String.valueOf(0));
+            circularProgressBar.setProgress(0f);
+            statusView.setText(getString(R.string.status0));
+            btnStart.setText(getString(R.string.start));
+            cameraView.disableView();
+            startCapture = true;
+        }
+//        Heart heart = new Heart(1,"OLA", Tools.getCurrentDate());
+//        DbHelper.addHeart(heart);
+//        refreshAdapter();
+
     }
 }
