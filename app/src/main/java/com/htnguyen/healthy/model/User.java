@@ -10,7 +10,7 @@ public class User {
     private int height;
     private int weight;
     private int heart;
-    private int online;
+    private long online;
     private String userFriend;
 
     public User() {
@@ -51,11 +51,11 @@ public class User {
         this.image = image;
     }
 
-    public int getOnline() {
+    public long getOnline() {
         return online;
     }
 
-    public void setOnline(int online) {
+    public void setOnline(long online) {
         this.online = online;
     }
 

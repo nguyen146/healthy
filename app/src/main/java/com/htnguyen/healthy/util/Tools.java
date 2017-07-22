@@ -61,7 +61,7 @@ public class Tools {
     public static byte[] convertImageViewToByteArray(ImageView imgPicture) {
         BitmapDrawable drawable = (BitmapDrawable) imgPicture.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
-//        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, 500, 500, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         return stream.toByteArray();
@@ -109,11 +109,11 @@ public class Tools {
     }
 
     public static String byeArrayToString(byte[] img) {
-        return Base64.encodeToString(img, Base64.NO_WRAP);
+        return Base64.encodeToString(img, Base64.DEFAULT);
     }
 
     public static byte[] stringToByteArray(String array) {
-        return Base64.decode(array, Base64.NO_WRAP);
+        return Base64.decode(array, Base64.DEFAULT);
     }
 
     public static double getMaxHeartRate(int age, int gender) {

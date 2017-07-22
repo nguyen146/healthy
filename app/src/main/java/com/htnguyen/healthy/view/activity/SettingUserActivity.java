@@ -129,7 +129,6 @@ public class SettingUserActivity extends BaseActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
 //                    userImgView.setImageBitmap(bitmap);
                     imageView.setImageBitmap(bitmap);
                 }

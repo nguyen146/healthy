@@ -89,13 +89,22 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
+                if(!user.getUserId().equals(mAuth.getCurrentUser().getUid()))
                 userList.add(user);
                 userAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                User user = dataSnapshot.getValue(User.class);
+                for(int i=0; i< userList.size(); i++){
+                    if (user.getUserId().equals(userList.get(i).getUserId())){
+                        userList.get(i).setImage(user.getImage());
+                        userList.get(i).setGender(user.getGender());
+                        userList.get(i).setUserName(user.getUserName());
+                    }
+                }
+                userAdapter.notifyDataSetChanged();
             }
 
             @Override

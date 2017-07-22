@@ -56,8 +56,8 @@ import static com.htnguyen.healthy.R.id.txt_user_name;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, HealthyView,
-        SignInDialog.onLoginListener, View.OnClickListener ,
-        ConfirmDialog.OnConfirmListener{
+        SignInDialog.onLoginListener, View.OnClickListener,
+        ConfirmDialog.OnConfirmListener {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         this.healthyPresenter.setView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -96,9 +96,9 @@ public class MainActivity extends BaseActivity
         Menu menu = navigationView.getMenu();
         navSignOut = menu.findItem(R.id.nav_logOut);
         View header = navigationView.getHeaderView(0);
-        userNameView = (TextView)header.findViewById(txt_user_name);
-        emailUserView = (TextView)header.findViewById(R.id.email_user);
-        imgUserView = (ImageView)header.findViewById(R.id.img_user);
+        userNameView = (TextView) header.findViewById(txt_user_name);
+        emailUserView = (TextView) header.findViewById(R.id.email_user);
+        imgUserView = (ImageView) header.findViewById(R.id.img_user);
         userNameView.setOnClickListener(this);
         emailUserView.setOnClickListener(this);
         imgUserView.setOnClickListener(this);
@@ -107,10 +107,10 @@ public class MainActivity extends BaseActivity
         loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
         //Setting
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        if(!loginPreferences.getBoolean("saveLogin", false)){
+        if (!loginPreferences.getBoolean("saveLogin", false)) {
             try {
                 mAuth.signOut();
-            }catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 e.printStackTrace();
             }
             mAuth = null;
@@ -125,9 +125,9 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onClick(View v) {
-        if(!loginPreferences.getString("username", "").equals("")){
-        navigator.navigateToSettingUser(MainActivity.this);
-        }else {
+        if (!loginPreferences.getString("username", "").equals("")) {
+            navigator.navigateToSettingUser(MainActivity.this);
+        } else {
             Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
         }
     }
@@ -135,15 +135,15 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         healthyPresenter.resume();
-        if(loginPreferences.getString("username", "").equals("")){
+        if (loginPreferences.getString("username", "").equals("")) {
             navSignOut.setTitle(getResources().getString(R.string.SignIn));
-            if(checkConnection()){
+            if (checkConnection()) {
                 new SignInDialog(MainActivity.this, this, this, mAuth, loginPreferences, mDatabase).show();
             }
-        }else {
-            if(checkConnection()){
+        } else {
+            if (checkConnection()) {
                 onLoginSuccess(mAuth.getCurrentUser());
-            }else {
+            } else {
                 userNameView.setText(loginPreferences.getString("username", ""));
                 emailUserView.setText(mAuth.getCurrentUser().getEmail());
                 imgUserView.setImageResource(R.drawable.user_default);
@@ -154,7 +154,6 @@ public class MainActivity extends BaseActivity
         }
         super.onResume();
     }
-
 
 
     @Override
@@ -175,7 +174,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            new ConfirmDialog(MainActivity.this,this, getString(R.string.exit), new Category()).show();
+            new ConfirmDialog(MainActivity.this, this, getString(R.string.exit), new Category()).show();
         }
     }
 
@@ -195,9 +194,9 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            if(!loginPreferences.getString("username", "").equals("")){
+            if (!loginPreferences.getString("username", "").equals("")) {
                 navigator.navigateToSettingUser(MainActivity.this);
-            }else {
+            } else {
                 Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
             }
             return true;
@@ -210,7 +209,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_home:
                 replaceFragment(R.id.content_main, new MainFragment());
                 break;
@@ -220,26 +219,36 @@ public class MainActivity extends BaseActivity
                 break;
 
             case R.id.nav_chat:
-                if(!loginPreferences.getString("username", "").equals("")){
-                    replaceFragment(R.id.content_main, new UserFragment());
-                }else {
-                    Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                if (checkConnection()) {
+                    if (loginPreferences.getString("username", "").equals("") && mAuth.getCurrentUser() == null) {
+                        Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                    } else {
+                        replaceFragment(R.id.content_main, new UserFragment());
+                    }
                 }
                 break;
 
             case R.id.nav_tracker:
-                replaceFragment(R.id.content_main, new TrackerFragment());
-                break;
-
-            case R.id.nav_settings:
-                if(!loginPreferences.getString("username", "").equals("")){
-                    navigator.navigateToSettingUser(MainActivity.this);
-                }else {
-                    Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                if (checkConnection()) {
+                    if (loginPreferences.getString("username", "").equals("") && mAuth.getCurrentUser() == null) {
+                        Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                    } else {
+                        replaceFragment(R.id.content_main, new TrackerFragment());
+                    }
                 }
                 break;
 
-            case  R.id.nav_heart:
+            case R.id.nav_settings:
+                if (checkConnection()) {
+                    if (loginPreferences.getString("username", "").equals("") && mAuth.getCurrentUser() == null) {
+                        Toast.makeText(MainActivity.this, getString(R.string.errSetting), Toast.LENGTH_SHORT).show();
+                    } else {
+                        navigator.navigateToSettingUser(MainActivity.this);
+                    }
+                }
+                break;
+
+            case R.id.nav_heart:
                 navigateToHeartRateActivity();
                 break;
 
@@ -277,7 +286,7 @@ public class MainActivity extends BaseActivity
         fab.hide();
     }
 
-    public Bitmap getImgUser(){
+    public Bitmap getImgUser() {
         return Tools.convertImageViewToBitmap(imgUserView);
     }
 
@@ -289,15 +298,15 @@ public class MainActivity extends BaseActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user1 = dataSnapshot.getValue(User.class);
-                if (user1 !=null){
+                if (user1 != null) {
                     userNameView.setText(user1.getUserName());
                     emailUserView.setText(user1.getUserEmail());
                 }
-                if (user1.getImage()!=null){
+                if (user1.getImage() != null) {
                     byte[] byte1 = Tools.stringToByteArray(user1.getImage().trim());
                     Bitmap bitmap = Tools.convertByteArrayToBitmap(byte1);
                     imgUserView.setImageBitmap(bitmap);
-                }else {
+                } else {
                     imgUserView.setImageResource(R.drawable.user_default);
                 }
                 navSignOut.setTitle(getResources().getString(R.string.log_out));
@@ -318,8 +327,8 @@ public class MainActivity extends BaseActivity
 
     //Check connecttion
     private boolean checkConnection() {
-        if(!NetworkConnectionUtil.isConnectedToMobileNetwork(this) && !NetworkConnectionUtil.isConnectedToWifi(this)
-                && !NetworkConnectionUtil.isConnectedToInternet(this)){
+        if (!NetworkConnectionUtil.isConnectedToMobileNetwork(this) && !NetworkConnectionUtil.isConnectedToWifi(this)
+                && !NetworkConnectionUtil.isConnectedToInternet(this)) {
             showSnack();
             return false;
         }
