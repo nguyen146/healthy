@@ -4,12 +4,15 @@ package com.htnguyen.healthy.view.fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -44,6 +47,8 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.bottom_navigation)
+    BottomNavigationView bottomNavigationView;
 
     public UserFragment() {
         // Required empty public constructor
@@ -64,6 +69,23 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_user, container, false);
         unbinder = ButterKnife.bind(this, view);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_user:
+                        showToastMessage("User");
+                        break;
+                    case R.id.nav_chat:
+                        showToastMessage("Chat");
+                        break;
+                    case R.id.nav_fr:
+                        showToastMessage("Friend");
+                        break;
+                }
+                return true;
+            }
+        });
         //SwipeRefresh
         ((MainActivity) getActivity()).hideFab();
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
@@ -73,8 +95,8 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         //RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.
-                VERTICAL));
+//        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.
+//                VERTICAL));
         userAdapter = new UserAdapter(userList, this, getContext());
         recyclerView.setAdapter(userAdapter);
         userAdapter.notifyDataSetChanged();

@@ -1,59 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:id="@+id/itemContainer"
+            android:background="@drawable/bg_rec"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:weightSum="10">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgUser"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:civ_border_color="#FF000000" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_weight="10"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/itemContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nguyen huynh"
-                android:textColor="#000" />
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:weightSum="10">
 
-            <TextView
-                android:id="@+id/txtSex"
-                android:layout_width="wrap_content"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgUser"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:civ_border_color="#FF000000" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nguyen huynh"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorWhite" />
+
+                    <TextView
+                        android:id="@+id/txtSex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="15"
+                        android:text="Nam" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtOnline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="end"
+                    android:text="Online"
+                    android:textColor="@color/color_blue" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="15"
-                android:text="Nam" />
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/chat"
+                    android:padding="@dimen/size10"
+                    android:background="@drawable/bg_rec"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="@string/chat"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:padding="@dimen/size10"
+                    android:id="@+id/add_fr"
+                    android:layout_width="0dp"
+                    android:background="@drawable/bg_rec"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:text="@string/add_fr"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
 
         </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtOnline"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Online"
-                android:gravity="end"
-                android:textColor="@color/color_blue" />
 
-        </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

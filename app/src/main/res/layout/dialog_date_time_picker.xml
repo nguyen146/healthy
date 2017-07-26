@@ -12,14 +12,14 @@
 
         <TextView
             android:id="@+id/txtSetDate"
-            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/setDate"
             android:textColor="@color/colorPrimary"
-            android:text="@string/setDate" />
+            android:textSize="20sp" />
 
         <View
             android:id="@+id/buttonVerticalDividerTwo"
@@ -31,27 +31,27 @@
 
         <TextView
             android:id="@+id/txtSetTime"
-            android:padding="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/setTime"
             android:textColor="@color/colorBlack"
-            android:text="@string/setTime" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/txtError"
-            android:padding="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_weight="0"
-            android:textSize="20sp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text=""
             android:textColor="@color/colorBlack"
-            android:text="" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

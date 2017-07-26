@@ -87,6 +87,7 @@
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="youSendNotifi">You have send a notification.</string>
+    <string name="add_fr">Add friend</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
