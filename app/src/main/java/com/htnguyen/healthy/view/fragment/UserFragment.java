@@ -3,14 +3,19 @@ package com.htnguyen.healthy.view.fragment;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +32,7 @@ import com.htnguyen.healthy.util.ListUtil;
 import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.activity.MainActivity;
 import com.htnguyen.healthy.view.adapter.UserAdapter;
+import com.htnguyen.healthy.view.component.BadgeDrawable;
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
@@ -68,6 +74,7 @@ public class UserFragment extends BaseFragment implements SwipyRefreshLayout.OnR
 //            throw new RuntimeException(context.toString() + " must implement onViewSelected");
 //        }
     }
+    int i =0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,7 +113,31 @@ public class UserFragment extends BaseFragment implements SwipyRefreshLayout.OnR
         userAdapter.notifyDataSetChanged();
         getUser();
         // Inflate the layout for this fragment
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_chat);
+        LayerDrawable icon = (LayerDrawable) menuItem.getIcon();
+        setBadgeCount(getContext(), icon, String.valueOf(userList.size()));
+        //https://mobikul.com/adding-badge-count-on-menu-items-like-cart-notification-etc/
         return view;
+    }
+
+
+
+    public static void setBadgeCount(Context context, LayerDrawable icon, String count) {
+
+        BadgeDrawable badge;
+
+        // Reuse drawable if possible
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_badge);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(count);
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_badge, badge);
     }
 
     public void getUser() {
@@ -196,6 +227,8 @@ public class UserFragment extends BaseFragment implements SwipyRefreshLayout.OnR
                                 userList.add(user);
                             }
                         }
+                        if (userList.size() > 0)
+                            recyclerView.scrollToPosition(userList.size() - 1);
                         userAdapter.notifyDataSetChanged();
                     }
 
