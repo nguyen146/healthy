@@ -53,7 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHoler>{
         }else {
             holder.sexView.setText(context.getString(R.string.male));
         }
-        holder.onlineView.setText("Online");
+        holder.emailView.setText(user.getUserEmail());
 
     }
 
@@ -70,8 +70,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHoler>{
         TextView nameUserView;
         @BindView(R.id.txtSex)
         TextView sexView;
-        @BindView(R.id.txtOnline)
-        TextView onlineView;
+        @BindView(R.id.txtEmail)
+        TextView emailView;
 
         public MyViewHoler(View itemView) {
             super(itemView);

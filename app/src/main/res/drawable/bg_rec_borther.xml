@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#00000000"/>
-    <stroke android:color="@color/colorWhite"
-        android:width="@dimen/size1"/>
-    <corners android:radius="@dimen/size3"/>
-    <padding android:bottom="@dimen/size6"
-        android:top="@dimen/size6"
-        android:left="@dimen/size10"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:top="@dimen/size10">
+        <shape>
+            <solid android:color="#00000000"/>
+            <stroke android:color="@color/colorWhite"
+                android:width="@dimen/size1"/>
+            <corners android:radius="@dimen/size3"/>
+            <padding android:bottom="@dimen/size10"
+                android:top="@dimen/size20"
+                android:left="@dimen/size10"/>
+        </shape>
+    </item>
+</layer-list>

@@ -48,10 +48,10 @@
     <string name="delete_this">Are you sure you want to delete this?</string>
 
     <string name="create_tracker">Create tracker</string>
-    <string name="create_timer">Create notification</string>
+    <string name="create_timer">Create reminder</string>
     <string name="errorDate">Date cannot be less than current date</string>
     <string name="chat">Chat</string>
-    <string name="notification">Notification</string>
+    <string name="reminder">Reminder</string>
     <string name="exit">Are you sure you want to exit?</string>
     <string name="status">Status</string>
     <string name="start">Start</string>
@@ -71,8 +71,8 @@
     <string name="BMI5">Obese class II</string>
     <string name="BMI6">Obese class III</string>
     <string name="null_message">Null message</string>
-    <string name="send_clock"><u>Send timer notification for you</u></string>
-    <string name="received_timer">Detail notification</string>
+    <string name="send_clock"><u>Send timer reminder for you</u></string>
+    <string name="received_timer">Detail reminder</string>
     <string name="errTimer">Overdue timer</string>
 
     <string name="StatusHeartRate1">Slow heartbeat</string>

@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TrackerDialog extends Dialog{
+public class AddPointTrackerDialog extends Dialog{
 
     @BindView(R.id.edtValue)
     EditText valueView;
@@ -32,18 +33,14 @@ public class TrackerDialog extends Dialog{
     TextInputLayout txtValue;
     private Category category;
     private DatabaseReference mCategory;
-    public TrackerDialog(@NonNull Context context, Category category, DatabaseReference mCategory) {
+    public AddPointTrackerDialog(@NonNull Context context, Category category, DatabaseReference mCategory) {
         super(context);
         this.category = category;
         this.mCategory = mCategory;
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        Window window = this.getWindow();
-//        lp.copyFrom(window.getAttributes());
-//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-//        this.getWindow().setAttributes(lp);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_tracker_confim);
+        setContentView(R.layout.dialog_create_point_tracker);
+        this.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
         ButterKnife.bind(this, getWindow().getDecorView());
         if(category.getNameValue() != null){
             CharSequence cs = category.getNameValue();
@@ -55,7 +52,7 @@ public class TrackerDialog extends Dialog{
 
     @OnClick(R.id.btnOk)
     public void onOk(){
-        int value = checkValue();
+        float value = checkValue();
         if (value ==-1) {
             txtValue.setError(getContext().getString(R.string.errValue));
             return;
@@ -101,7 +98,7 @@ public class TrackerDialog extends Dialog{
     }
 
     private void editTracker(Category category, int value){
-        int tracker = 0;
+        float tracker = 0f;
         List<Items> itemCate = category.getItemsList();
         if(itemCate.size()>=5){
             itemCate.remove(0);
@@ -127,12 +124,12 @@ public class TrackerDialog extends Dialog{
         dismiss();
     }
 
-    private int checkValue(){
+    private float checkValue(){
         String value = valueView.getText().toString().trim();
         if (value.length()==0) return -1;
-        int trackerValue = -1;
+        float trackerValue = -1;
         try {
-            trackerValue = Integer.parseInt(value);
+            trackerValue = Float.parseFloat(value);
         }catch (Exception e){
             e.printStackTrace();
             return -1;

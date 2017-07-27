@@ -3,6 +3,7 @@ package com.htnguyen.healthy.view.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,10 +17,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.htnguyen.healthy.R;
+import com.htnguyen.healthy.dialog.AddPointTrackerDialog;
 import com.htnguyen.healthy.dialog.ConfirmDialog;
 import com.htnguyen.healthy.dialog.CreateCategoryDialog;
 import com.htnguyen.healthy.dialog.LoadingDialog;
-import com.htnguyen.healthy.dialog.TrackerDialog;
 import com.htnguyen.healthy.model.Category;
 import com.htnguyen.healthy.view.activity.MainActivity;
 import com.htnguyen.healthy.view.adapter.CategoryAdapter;
@@ -46,6 +47,8 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fabadd)
+    FloatingActionButton fabAddView;
 
 
     public TrackerFragment() {
@@ -69,6 +72,21 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setHasFixedSize(true);
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.
 //                VERTICAL));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0)
+                    fabAddView.hide();
+                else if (dy < 0)
+                    fabAddView.show();
+            }
+        });
 
         categoryAdapter = new CategoryAdapter(this, categoryList, getContext());
         recyclerView.setAdapter(categoryAdapter);
@@ -101,12 +119,6 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
             }
         }, 2000);
     }
-//
-//    @Override
-//    public void onFabClick(int position) {
-//        Category category = categoryList.get(position);
-//        new TrackerDialog(getActivity(),category, mCategory).show();
-//    }
 
     private void loadListTracker(){
         mCategory.addChildEventListener(new ChildEventListener() {
@@ -182,7 +194,7 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onAddItem(Category category) {
-        new TrackerDialog(getActivity(),category, mCategory).show();
+        new AddPointTrackerDialog(getActivity(),category, mCategory).show();
     }
 
     @Override

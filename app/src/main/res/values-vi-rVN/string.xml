@@ -43,7 +43,7 @@
     <string name="errSetting">Bạn chưa đăng nhập</string>
     <string name="hint_description">Điền ghi chú của bạn ở đây</string>
     <string name="new_point">Giá trị mới</string>
-    <string name="create_timer">Tạo thông báo</string>
+    <string name="create_timer">Tạo nhắc nhở</string>
     <string name="errorDate">Ngày giờ chọn không thể nhỏ hơn ngày giờ hiện hành</string>
     <string name="exit">Bạn muốn thoát ứng dụng?</string>
     <string name="status">Trạng thái</string>
@@ -69,10 +69,10 @@
     <string name="StatusHeartRate2">Nhịp tim bình thường</string>
     <string name="StatusHeartRate3">Nhịp tim cao</string>
     <string name="null_message">Tin nhắn rỗng</string>
-    <string name="send_clock"><u>Gửi cho bạn một thông báo.</u></string>
-    <string name="received_timer">Chi tiết thông báo</string>
+    <string name="send_clock"><u>Gửi cho bạn một nhắc nhở.</u></string>
+    <string name="received_timer">Chi tiết nhắc nhở</string>
     <string name="errTimer">Đã quá hạn giờ</string>
-    <string name="youSendNotifi">Bạn đã gửi một thông báo.</string>
+    <string name="youSendNotifi">Bạn đã gửi một nhắc nhở.</string>
 
 
     <string name="female">Nữ</string>
@@ -88,7 +88,7 @@
 
 
     <string name="chat">Trò chuyện</string>
-    <string name="notification">Thông báo</string>
+    <string name="reminder">Nhắc nhở</string>
     <string name="value">Giá trị</string>
     //User
     <string name="errUser">Tên đăng nhập không hợp lệ</string>
@@ -118,7 +118,7 @@
 
 
     <string name="total">Tổng cộng</string>
-    <string name="timer">Thông báo</string>
+    <string name="timer">Nhắc nhở</string>
     <string name="maxHeart">Nhịp tim cao nhất</string>
     <string name="water">Lượng nước cần thiết</string>
     <string name="fat">Tỷ lệ mỡ</string>

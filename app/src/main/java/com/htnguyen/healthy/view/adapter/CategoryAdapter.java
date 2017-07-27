@@ -48,11 +48,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                     holder.lineGraphView.setLineGraphData(itemses.get(i).getValue());
                 }
                 try {
-                    int check = Integer.parseInt(itemses.get(itemses.size()-1).getDescription().trim());
-                    if (check >0){
-                        decription = context.getString(R.string.increase)+ " " +Math.abs(check);
+                    float check = Float.parseFloat(itemses.get(itemses.size()-1).getDescription().trim());
+                    if (check >0f){
+                        decription = context.getString(R.string.increase)+ " " +Math.abs(check) + " " + category.getNameValue();
                     }else {
-                        decription = context.getString(R.string.reduced)+ " " +Math.abs(check);
+                        decription = context.getString(R.string.reduced)+ " " +Math.abs(check) + " " + category.getNameValue();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -118,7 +118,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             btnDelete = (FloatingActionButton) v.findViewById(R.id.delete);
             btnAdd = (FloatingActionButton) v.findViewById(R.id.addNew);
         }
-
     }
 
     public interface CategoryAdapterListener {

@@ -157,10 +157,11 @@ public class SignInDialog extends Dialog {
                     editer.commit();
                 }
                 onLoginListener.onLoginSuccess(mAuth.getCurrentUser());
-                Toast.makeText(getContext(), "Authentication success.",
-                        Toast.LENGTH_SHORT).show();
                 loadingDialog.dismiss();
                 dismiss();
+                Toast.makeText(getContext(), "Authentication success.",
+                        Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

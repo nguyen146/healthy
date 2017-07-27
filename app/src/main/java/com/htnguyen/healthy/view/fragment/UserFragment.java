@@ -4,11 +4,10 @@ package com.htnguyen.healthy.view.fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,12 +18,17 @@ import android.view.ViewGroup;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.htnguyen.healthy.R;
 import com.htnguyen.healthy.dialog.ChatDialog;
 import com.htnguyen.healthy.model.User;
+import com.htnguyen.healthy.util.ListUtil;
 import com.htnguyen.healthy.util.Tools;
 import com.htnguyen.healthy.view.activity.MainActivity;
 import com.htnguyen.healthy.view.adapter.UserAdapter;
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayout;
+import com.omadahealth.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, UserAdapter.OnUserClickListener {
+public class UserFragment extends BaseFragment implements SwipyRefreshLayout.OnRefreshListener, UserAdapter.OnUserClickListener {
 
     //    private OnUserClickListener userClickListener;
     public static final String U_ID_USER = "UidUser";
@@ -46,9 +50,10 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_layout)
-    SwipeRefreshLayout swipeRefreshLayout;
+    SwipyRefreshLayout swipeRefreshLayout;
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
+    private int limitLoading = 10;
 
     public UserFragment() {
         // Required empty public constructor
@@ -88,7 +93,6 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         });
         //SwipeRefresh
         ((MainActivity) getActivity()).hideFab();
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_orange_dark,
                 android.R.color.holo_green_dark, android.R.color.holo_blue_bright);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -107,7 +111,7 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     public void getUser() {
 
-        mUsers.addChildEventListener(new ChildEventListener() {
+        mUsers.limitToLast(limitLoading).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 User user = dataSnapshot.getValue(User.class);
@@ -146,17 +150,6 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         });
     }
 
-    @Override
-    public void onRefresh() {
-        swipeRefreshLayout.setRefreshing(false);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                //Refresh adapter here
-//
-//            }
-//        }, 2000);
-    }
 
     @Override
     public void onUserClick(int position) {
@@ -185,5 +178,35 @@ public class UserFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         if (user.getImage() == null) return null;
         byte[] byte1 = Tools.stringToByteArray(user.getImage().trim());
         return Tools.convertByteArrayToBitmap(byte1);
+    }
+
+    @Override
+    public void onRefresh(SwipyRefreshLayoutDirection direction) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                limitLoading += 11;
+                Query query = mUsers.limitToLast(limitLoading).orderByPriority();
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            User user = dataSnapshot1.getValue(User.class);
+                            if(!user.getUserId().equals(mAuth.getCurrentUser().getUid()) && !ListUtil.equalUserKey(userList, user.getUserId())){
+                                userList.add(user);
+                            }
+                        }
+                        userAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+        }, 2000);
     }
 }

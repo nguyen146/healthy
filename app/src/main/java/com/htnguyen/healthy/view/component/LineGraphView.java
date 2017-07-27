@@ -89,7 +89,7 @@ public class LineGraphView extends BarLineChartBase<LineData> implements LineDat
     }
 
 
-    public void setLineGraphData(int newPointLine) {
+    public void setLineGraphData(float newPointLine) {
         this.setData(getLineData(newPointLine));
         this.notifyDataSetChanged();
         this.invalidate();
@@ -106,7 +106,7 @@ public class LineGraphView extends BarLineChartBase<LineData> implements LineDat
     /**
      * @param newPoint new entry point in line
      */
-    private ArrayList<Entry> addNewEntryPoint(int newPoint) {
+    private ArrayList<Entry> addNewEntryPoint(float newPoint) {
         entryPoint = addNewPositionPoint(entryPoint, newPoint);
         return entryPoint;
     }
@@ -117,7 +117,7 @@ public class LineGraphView extends BarLineChartBase<LineData> implements LineDat
      * @param oldEntryPoints data entry point
      * @param newPoint       new point
      */
-    private ArrayList<Entry> addNewPositionPoint(ArrayList<Entry> oldEntryPoints, int newPoint) {
+    private ArrayList<Entry> addNewPositionPoint(ArrayList<Entry> oldEntryPoints, float newPoint) {
         ArrayList<Entry> newEntryPoints = new ArrayList<>();
         for (int i = 0; i < MAX_POINT_IN_GRAPH; i++) {
             if (i == (MAX_POINT_IN_GRAPH - 1)) {
@@ -133,7 +133,7 @@ public class LineGraphView extends BarLineChartBase<LineData> implements LineDat
      * @param newPointLine new point behind
      * @return data for graph
      */
-    private LineData getLineData(int newPointLine) {
+    private LineData getLineData(float newPointLine) {
         if (entryPoint == null) {
             setDefaultLineGraphData();
         }

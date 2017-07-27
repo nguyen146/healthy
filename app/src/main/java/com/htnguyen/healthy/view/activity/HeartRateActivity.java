@@ -1,8 +1,13 @@
 package com.htnguyen.healthy.view.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -114,12 +119,31 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_heart_rate);
+        //Check permision
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyhavePermission()) {
+                requestForSpecificPermission();
+            }
+        }
+
         graphView = new GraphView(HeartRateActivity.this);
         heartRatePresenter = new HeartRatePresenter();
         heartRatePresenter.setView(this);
         heartRatePresenter.initializeView();
+    }
 
+    private boolean checkIfAlreadyhavePermission() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(HeartRateActivity.this, new String[]{Manifest.permission.CAMERA},1);
     }
 
     @Override
@@ -164,7 +188,7 @@ HeartRateAdapter.HeartAdapterListener, ConfirmDialogHeartRate.OnConfirmListener{
 //Gray color
 //        Imgproc.threshold(inputFrame.gray(), screenRecoder, 123, 255, Imgproc.THRESH_BINARY); gray not support xperia huhu
         //Rba to black white color
-        Imgproc.threshold(inputFrame.gray(), screenRecoder, 123, 255,  Imgproc.COLOR_RGB2GRAY);
+//        Imgproc.threshold(inputFrame.gray(), screenRecoder, 123, 255,  Imgproc.COLOR_RGB2GRAY);
 //        inputFrame.rgba().convertTo(screenRecoder, );
         Imgproc.threshold(inputFrame.rgba() , screenRecoder, 123, 255, Imgproc.THRESH_BINARY);
         //Black white color

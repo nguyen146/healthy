@@ -106,7 +106,7 @@
                 android:layout_marginRight="@dimen/size14"
 
                 android:visibility="invisible"
-                app:srcCompat="@drawable/ic_recycle" />
+                app:srcCompat="@drawable/delete" />
         </FrameLayout>
 
 

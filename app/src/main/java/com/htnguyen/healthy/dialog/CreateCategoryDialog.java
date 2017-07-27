@@ -56,13 +56,13 @@ public class CreateCategoryDialog extends Dialog{
         boolean valid = true;
         if(titleView.getText().toString().trim().length() == 0){
             valid = false;
-            txtTitle.setError(getContext().getString(R.string.errrequired));
+            txtTitle.setError(getContext().getString(R.string.errValue));
         }else {
             txtTitle.setError(null);
         }
         if (nameValueView.getText().toString().trim().length() == 0){
             valid = false;
-            txtNmaeValue.setError(getContext().getString(R.string.errrequired));
+            txtNmaeValue.setError(getContext().getString(R.string.errValue));
         }else {
             txtTitle.setError(null);
         }
