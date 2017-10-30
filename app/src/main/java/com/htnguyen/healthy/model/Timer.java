@@ -14,18 +14,20 @@ public class Timer extends RealmObject{
     private long id;
     private String title;
     private String description;
+    private String phoneNumber;
     private int pendingId;
     private Date wakeUpTime;
 
     public Timer() {
     }
 
-    public Timer(String title, String description, int pendingId, Date wakeUpTime) {
+    public Timer(String title, String description, int pendingId, Date wakeUpTime, String phoneNumber) {
         this.id = Calendar.getInstance().getTimeInMillis();
         this.title = title;
         this.description = description;
         this.pendingId = pendingId;
         this.wakeUpTime = wakeUpTime;
+        this.phoneNumber = phoneNumber;
     }
 
     public Timer(String title, String description, Date wakeUpTime) {
@@ -81,5 +83,13 @@ public class Timer extends RealmObject{
 
     public void setWakeUpTime(Date wakeUpTime) {
         this.wakeUpTime = wakeUpTime;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

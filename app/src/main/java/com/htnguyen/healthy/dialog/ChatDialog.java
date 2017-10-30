@@ -227,9 +227,9 @@ public class ChatDialog extends Dialog implements SwipeRefreshLayout.OnRefreshLi
     }
 
     @Override
-    public void onCreate(String title, String date, String description) {
+    public void onCreate(String title, String date, String description, String phone) {
         List<TimerSender> timers = new ArrayList<>();
-        TimerSender timer = new TimerSender(title, description, Tools.convertDateToLong(Tools.convertStringToDate(date)));
+        TimerSender timer = new TimerSender(title, description, Tools.convertDateToLong(Tools.convertStringToDate(date)), phone);
         timers.add(timer);
         chatTimer(Uid, timers);
     }
@@ -243,9 +243,10 @@ public class ChatDialog extends Dialog implements SwipeRefreshLayout.OnRefreshLi
     public void onAccept(TimerSender timer) {
         String description;
         description = timer.getDescription() == null ? "" : timer.getDescription();
+        String phone = timer.getPhoneNumber() == null ? "" : timer.getPhoneNumber();
         Timer timer1 = new Timer(timer.getTitle(),description,
                 DbHelper.getRandomPendingId(),
-                Tools.convertLongToDate(timer.getWakeUpTime()));
+                Tools.convertLongToDate(timer.getWakeUpTime()), phone);
         if(DbHelper.addTimer(mActivity,timer1)){
             Toast.makeText(mActivity,getContext().getString(R.string.saved),Toast.LENGTH_SHORT).show();
         }else {

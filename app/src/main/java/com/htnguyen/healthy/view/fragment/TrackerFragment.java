@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +38,7 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
-        CategoryAdapter.CategoryAdapterListener, CreateCategoryDialog.OnCreateCategoryListener,ConfirmDialog.OnConfirmListener{
+        CategoryAdapter.CategoryAdapterListener, CreateCategoryDialog.OnCreateCategoryListener, ConfirmDialog.OnConfirmListener {
 
     private Unbinder unbinder;
     private CategoryAdapter categoryAdapter;
@@ -49,6 +50,8 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.fabadd)
     FloatingActionButton fabAddView;
+    @BindView(R.id.llNoItemsFound)
+    LinearLayout noItemView;
 
 
     public TrackerFragment() {
@@ -92,6 +95,7 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
         recyclerView.setAdapter(categoryAdapter);
         categoryAdapter.notifyDataSetChanged();
         loadListTracker();
+        checkNoItem();
         return view;
     }
 
@@ -120,7 +124,7 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
         }, 2000);
     }
 
-    private void loadListTracker(){
+    private void loadListTracker() {
         mCategory.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -128,13 +132,14 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
                 category1.setCateId(dataSnapshot.getKey());
                 categoryList.add(category1);
                 categoryAdapter.notifyDataSetChanged();
+                checkNoItem();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Category category1 = dataSnapshot.getValue(Category.class);
-                for(int i = 0 ; i< categoryList.size(); i++){
-                    if(dataSnapshot.getKey().equals(categoryList.get(i).getCateId())){
+                for (int i = 0; i < categoryList.size(); i++) {
+                    if (dataSnapshot.getKey().equals(categoryList.get(i).getCateId())) {
                         categoryList.get(i).setDescription(category1.getDescription());
                         categoryList.get(i).setItemsList(category1.getItemsList());
                     }
@@ -145,12 +150,13 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                for(int i = 0 ; i< categoryList.size(); i++){
-                if(dataSnapshot.getKey().equals(categoryList.get(i).getCateId())){
-                    categoryList.remove(i);
+                for (int i = 0; i < categoryList.size(); i++) {
+                    if (dataSnapshot.getKey().equals(categoryList.get(i).getCateId())) {
+                        categoryList.remove(i);
+                    }
                 }
-            }
                 categoryAdapter.notifyDataSetChanged();
+                checkNoItem();
             }
 
             @Override
@@ -167,23 +173,22 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
     }
 
     @OnClick(R.id.fabadd)
-    public void addTracker(){
-        new CreateCategoryDialog(getActivity(),this).show();
+    public void addTracker() {
+        new CreateCategoryDialog(getActivity(), this).show();
     }
 
     @Override
     public void onCreateCategory(String title, String nameValue) {
         //        Items items = new Items()
-        Category category = new Category(title,"",nameValue);
-        final LoadingDialog loadingDialog = new LoadingDialog(getActivity(),getString(R.string.progressing));
+        Category category = new Category(title, "", nameValue);
+        final LoadingDialog loadingDialog = new LoadingDialog(getActivity(), getString(R.string.progressing));
         loadingDialog.show();
         mCategory.push().setValue(category, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if(databaseError!=null){
+                if (databaseError != null) {
                     showToastMessage(getString(R.string.errsaved));
-                }
-                else {
+                } else {
                     showToastMessage(getString(R.string.saved));
                 }
                 loadingDialog.dismiss();
@@ -194,12 +199,12 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
 
     @Override
     public void onAddItem(Category category) {
-        new AddPointTrackerDialog(getActivity(),category, mCategory).show();
+        new AddPointTrackerDialog(getActivity(), category, mCategory).show();
     }
 
     @Override
     public void onDeleteCatagory(Category category) {
-        new ConfirmDialog(getActivity(), this, getString(R.string.deleteTracker) , category).show();
+        new ConfirmDialog(getActivity(), this, getString(R.string.deleteTracker), category).show();
     }
 
     @Override
@@ -209,13 +214,21 @@ public class TrackerFragment extends BaseFragment implements SwipeRefreshLayout.
         mCategory.child(category.getCateId()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if(databaseError!=null){
+                if (databaseError != null) {
                     showToastMessage(getString(R.string.delerror));
-                }else {
+                } else {
                     showToastMessage(getString(R.string.delsucess));
                 }
                 loadingDialog.dismiss();
             }
         });
+    }
+
+    public void checkNoItem() {
+        if (categoryList.size() <= 0) {
+            noItemView.setVisibility(View.VISIBLE);
+        } else {
+            noItemView.setVisibility(View.GONE);
+        }
     }
 }

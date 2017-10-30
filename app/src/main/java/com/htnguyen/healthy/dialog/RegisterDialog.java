@@ -56,6 +56,8 @@ public class RegisterDialog extends Dialog {
     TextInputLayout txtPasswordView;
     @BindView(R.id.txt_name)
     TextInputLayout txtNameView;
+    @BindView(R.id.password2)
+    EditText password2View;
 
     public RegisterDialog(@NonNull Context context, FirebaseAuth mAuth, Activity mActivity, DatabaseReference mDatabase) {
         super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
@@ -75,6 +77,10 @@ public class RegisterDialog extends Dialog {
     @OnClick(R.id.create)
     public void Create() {
         if (!inputValidate()) return;
+        if(!password2View.getText().toString().trim().equals(passwordView.getText().toString().trim())){
+            txtPasswordView.setError(getContext().getString(R.string.err_password));
+            return;
+        }
         loadingDialog.show();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(mActivity, new OnCompleteListener<AuthResult>() {

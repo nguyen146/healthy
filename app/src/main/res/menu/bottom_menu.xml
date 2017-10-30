@@ -4,14 +4,14 @@
     <item
         android:id="@+id/nav_user"
         android:icon="@drawable/ic_home"
-        android:title="@string/home" />
+        android:title="User" />
     <item
         android:id="@+id/nav_chat"
         android:icon="@drawable/ic_chat_c"
-        android:title="@string/reminder"
+        android:title="Notification"
         app:actionLayout="@layout/menu_counter"/>
     <item
         android:id="@+id/nav_fr"
         android:icon="@drawable/ic_user"
-        android:title="@string/tracker" />
+        android:title="Friend" />
 </menu>

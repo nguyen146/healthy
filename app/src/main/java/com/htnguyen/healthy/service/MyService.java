@@ -1,5 +1,6 @@
 package com.htnguyen.healthy.service;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,10 +8,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.NotificationCompat;
 import android.widget.Toast;
 
@@ -57,6 +61,16 @@ public class MyService extends Service{
                 mNotificationManager.cancel(mTimer.getPendingId());
                 setSnooze(mTimer);
                 break;
+            case Constants.ACTION.CALL_ACTION:
+                Intent intent2 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mTimer.getPhoneNumber()));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intent2);
+                }
+                else {
+                    Toast.makeText(this, "Can't call", Toast.LENGTH_SHORT).show();
+                }
+                mNotificationManager.cancel(mTimer.getPendingId());
+                break;
         }
         return START_NOT_STICKY;
     }
@@ -76,6 +90,7 @@ public class MyService extends Service{
         dismissIntent.putExtra(Constants.KEY.TIMER_KEY, mTimer.getId());
         PendingIntent dismissPendingIntent = PendingIntent.getService(this, mTimer.getPendingId(),
                 dismissIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         //Snooze action intent
         Intent snoozeIntent = new Intent(this, MyService.class);
         snoozeIntent.setAction(Constants.ACTION.SNOOZE_ACTION);
@@ -85,23 +100,51 @@ public class MyService extends Service{
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue_heart);
 
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle(mTimer.getTitle())
-                .setTicker(mTimer.getTitle())
-                .setSubText(Tools.convertDateToString(mTimer.getWakeUpTime()))
-                .setContentText(mTimer.getDescription())
-                .setSmallIcon(R.drawable.blue_heart)
-                .setLargeIcon(Bitmap.createScaledBitmap(bitmap, 128, 128, false))
-                .setOngoing(true)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .addAction(R.drawable.ic_x, getString(R.string.dismiss),
-                        dismissPendingIntent)
-                .addAction(R.drawable.ic_snooze, getString(R.string.snooze), snoozePendingIntent).
-                        build();
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-        notification.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS;
-        mNotificationManager.notify(mTimer.getPendingId(), notification);
+        if(!mTimer.getPhoneNumber().equals("")){
+            Intent phoneIntent = new Intent(this, MyService.class);
+            phoneIntent.setAction(Constants.ACTION.CALL_ACTION);
+            phoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            phoneIntent.putExtra(Constants.KEY.TIMER_KEY, mTimer.getId());
+            PendingIntent phonePendingIntent = PendingIntent.getService(this, mTimer.getPendingId(),
+                    phoneIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setContentTitle(mTimer.getTitle())
+                    .setTicker(mTimer.getTitle())
+                    .setSubText(Tools.convertDateToString(mTimer.getWakeUpTime()))
+                    .setContentText(mTimer.getDescription())
+                    .setSmallIcon(R.drawable.blue_heart)
+                    .setLargeIcon(Bitmap.createScaledBitmap(bitmap, 128, 128, false))
+                    .setOngoing(true)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .addAction(R.drawable.ic_x, getString(R.string.dismiss),
+                            dismissPendingIntent)
+                    .addAction(R.drawable.ic_call, getString(R.string.call), phonePendingIntent)
+                    .addAction(R.drawable.ic_snooze, getString(R.string.snooze), snoozePendingIntent).
+                            build();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS;
+            mNotificationManager.notify(mTimer.getPendingId(), notification);
+        }else {
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setContentTitle(mTimer.getTitle())
+                    .setTicker(mTimer.getTitle())
+                    .setSubText(Tools.convertDateToString(mTimer.getWakeUpTime()))
+                    .setContentText(mTimer.getDescription())
+                    .setSmallIcon(R.drawable.blue_heart)
+                    .setLargeIcon(Bitmap.createScaledBitmap(bitmap, 128, 128, false))
+                    .setOngoing(true)
+                    .setAutoCancel(true)
+                    .setContentIntent(pendingIntent)
+                    .addAction(R.drawable.ic_x, getString(R.string.dismiss),
+                            dismissPendingIntent)
+                    .addAction(R.drawable.ic_snooze, getString(R.string.snooze), snoozePendingIntent).
+                            build();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.defaults |= Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS;
+            mNotificationManager.notify(mTimer.getPendingId(), notification);
+        }
     }
 
     private void setSnooze(Timer mTimer) {

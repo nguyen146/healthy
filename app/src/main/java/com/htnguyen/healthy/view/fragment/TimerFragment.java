@@ -1,14 +1,20 @@
 package com.htnguyen.healthy.view.fragment;
 
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.htnguyen.healthy.R;
 import com.htnguyen.healthy.dialog.CreateTimerDialog;
@@ -32,6 +38,8 @@ public class TimerFragment extends BaseFragment implements
         CreateTimerDialog.OnCreateTimerListener{
 
     private Unbinder unbinder;
+    @BindView(R.id.llNoItemsFound)
+    LinearLayout noItemView;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @BindView(R.id.swipe_refresh_layout)
@@ -58,8 +66,28 @@ public class TimerFragment extends BaseFragment implements
 
         recyclerView.setAdapter(mTimerAdapter);
         mTimerAdapter.notifyDataSetChanged();
+        checkNoItem();
 
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyhavePermission()) {
+                requestForSpecificPermission();
+            }
+        }
         return view;
+    }
+
+    private boolean checkIfAlreadyhavePermission() {
+        int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestForSpecificPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE},1);
     }
 
     @Override
@@ -83,18 +111,28 @@ public class TimerFragment extends BaseFragment implements
     public void onDelete(Timer timer) {
         DbHelper.deleteTimer(getActivity(), timer);
         refeshAdapter();
+        checkNoItem();
     }
 
     @Override
-    public void onCreate(String title, String date, String description) {
+    public void onCreate(String title, String date, String description, String phoneNumber) {
                 Timer timer = new Timer(title,description,
                 DbHelper.getRandomPendingId(),
-                Tools.convertStringToDate(date));
+                Tools.convertStringToDate(date),phoneNumber);
         if(DbHelper.addTimer(getActivity(),timer)){
             showToastMessage(getString(R.string.saved));
         }else {
             showToastMessage(getString(R.string.errsaved));
         }
         refeshAdapter();
+        checkNoItem();
+    }
+
+    public void checkNoItem(){
+        if(timerRealmResults.size()<=0){
+            noItemView.setVisibility(View.VISIBLE);
+        }else {
+            noItemView.setVisibility(View.GONE);
+        }
     }
 }

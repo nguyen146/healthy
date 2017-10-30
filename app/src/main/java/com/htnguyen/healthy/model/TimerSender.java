@@ -5,15 +5,17 @@ public class TimerSender {
 
     private String title;
     private String description;
+    private String phoneNumber;
     private long wakeUpTime;
 
     public TimerSender() {
     }
 
-    public TimerSender(String title, String description, long wakeUpTime) {
+    public TimerSender(String title, String description, long wakeUpTime, String phoneNumber) {
         this.title = title;
         this.description = description;
         this.wakeUpTime = wakeUpTime;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getTitle() {
@@ -38,5 +40,13 @@ public class TimerSender {
 
     public void setWakeUpTime(long wakeUpTime) {
         this.wakeUpTime = wakeUpTime;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

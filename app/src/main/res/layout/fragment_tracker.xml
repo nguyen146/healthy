@@ -30,4 +30,30 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/img_plus" />
 
+    <LinearLayout
+        android:id="@+id/llNoItemsFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/img_cloud" />
+
+        <TextView
+            android:id="@+id/txtNoItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:text="@string/noData"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

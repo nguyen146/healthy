@@ -29,6 +29,10 @@ public class CreateTimerDialog extends Dialog {
     EditText timerView;
     @BindView(R.id.edtDescription)
     EditText desciptionView;
+    @BindView(R.id.txt_phone)
+    TextInputLayout txtPhone;
+    @BindView(R.id.edt_phone)
+    EditText phoneView;
 
     private OnCreateTimerListener onCreateTimerListener;
     public CreateTimerDialog(@NonNull Context context, OnCreateTimerListener onCreateTimerListener) {
@@ -47,7 +51,7 @@ public class CreateTimerDialog extends Dialog {
         if (!checkRequired()) return;
         onCreateTimerListener.onCreate(titleView.getText().toString().trim(),
                 timerView.getText().toString().trim(),
-                desciptionView.getText().toString().trim());
+                desciptionView.getText().toString().trim(),phoneView.getText().toString().trim());
         dismiss();
     }
 
@@ -57,7 +61,7 @@ public class CreateTimerDialog extends Dialog {
     }
 
     public interface OnCreateTimerListener{
-        void onCreate(String title, String date, String description);
+        void onCreate(String title, String date, String description, String phoneNumber);
     }
 
     public boolean checkRequired(){

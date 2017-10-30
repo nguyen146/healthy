@@ -65,9 +65,9 @@ public class AddPointTrackerDialog extends Dialog{
         if(category.getItemsList()!=null)
             itemCate = category.getItemsList();
 
-        if(itemCate.size()>=7){
-            itemCate.remove(0);
-        }
+//        if(itemCate.size()>=7){
+//            itemCate.remove(0);
+//        }
         if (itemCate.size()>0){
             description = String.valueOf(value - itemCate.get(itemCate.size()-1).getValue());
         }else {

@@ -33,6 +33,10 @@ public class DetailTimerDialog extends Dialog {
     EditText timerView;
     @BindView(R.id.edtDescription)
     EditText desciptionView;
+    @BindView(R.id.txt_phone)
+    TextInputLayout txtPhone;
+    @BindView(R.id.edt_phone)
+    EditText phoneView;
     private TimerSender timer;
     public DetailTimerDialog(@NonNull Context context, OnTimerAcceptListener onTimerAcceptListener, TimerSender timer) {
         super(context);
@@ -47,6 +51,7 @@ public class DetailTimerDialog extends Dialog {
         statusView.setText(getContext().getString(R.string.received_timer));
         timerView.setFocusable(false);
         titleView.setFocusable(false);
+        phoneView.setFocusable(false);
         desciptionView.setFocusable(false);
         try {
                 titleView.setText(timer.getTitle());
@@ -54,6 +59,12 @@ public class DetailTimerDialog extends Dialog {
             if (timer.getDescription() !=null)
             {
                 desciptionView.setText(timer.getDescription());
+            }
+            else {
+                desciptionView.setText("");
+            }
+            if (timer.getPhoneNumber() !=null){
+                phoneView.setText(timer.getPhoneNumber());
             }
         }catch (Exception e){
             e.printStackTrace();

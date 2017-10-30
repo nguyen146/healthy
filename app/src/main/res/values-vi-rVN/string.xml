@@ -73,7 +73,11 @@
     <string name="received_timer">Chi tiết nhắc nhở</string>
     <string name="errTimer">Đã quá hạn giờ</string>
     <string name="youSendNotifi">Bạn đã gửi một nhắc nhở.</string>
-
+    <string name="noData">Không có dữ liệu</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="call">Gọi</string>
+    <string name="password2">Nhập lại password</string>
+    <string name="err_password">Mật khẩu nhập lại không đúng</string>
 
     <string name="female">Nữ</string>
     <string name="male">Nam</string>
